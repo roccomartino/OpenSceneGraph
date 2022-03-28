@@ -97,6 +97,10 @@ State::State():
     _modelViewProjectionMatrixUniform = new Uniform(Uniform::FLOAT_MAT4,"osg_ModelViewProjectionMatrix");
     _normalMatrixUniform = new Uniform(Uniform::FLOAT_MAT3,"osg_NormalMatrix");
 
+    _modelViewMatrixInverseUniform = new Uniform(Uniform::FLOAT_MAT4, "osg_ModelViewMatrixInverse");
+    _projectionMatrixInverseUniform = new Uniform(Uniform::FLOAT_MAT4, "osg_ProjectionMatrixInverse");
+    _modelViewProjectionMatrixInverseUniform = new Uniform(Uniform::FLOAT_MAT4, "osg_ModelViewProjectionMatrixInverse");
+
     resetVertexAttributeAlias();
 
     _abortRenderingPtr = NULL;
@@ -1418,6 +1422,10 @@ void State::applyModelViewAndProjectionUniformsIfRequired()
     if (_projectionMatrixUniform) _lastAppliedProgramObject->apply(*_projectionMatrixUniform);
     if (_modelViewProjectionMatrixUniform) _lastAppliedProgramObject->apply(*_modelViewProjectionMatrixUniform);
     if (_normalMatrixUniform) _lastAppliedProgramObject->apply(*_normalMatrixUniform);
+
+    if (_modelViewMatrixInverseUniform.valid()) _lastAppliedProgramObject->apply(*_modelViewMatrixInverseUniform);
+    if (_projectionMatrixInverseUniform) _lastAppliedProgramObject->apply(*_projectionMatrixInverseUniform);
+    if (_modelViewProjectionMatrixInverseUniform) _lastAppliedProgramObject->apply(*_modelViewProjectionMatrixInverseUniform);
 }
 
 namespace State_Utils
@@ -1608,6 +1616,7 @@ void State::applyProjectionMatrix(const osg::RefMatrix* matrix)
         if (_useModelViewAndProjectionUniforms)
         {
             if (_projectionMatrixUniform.valid()) _projectionMatrixUniform->set(*_projection);
+            if (_projectionMatrixInverseUniform.valid()) _projectionMatrixInverseUniform->set(osg::Matrix::inverse(*_projection));
             updateModelViewAndProjectionMatrixUniforms();
         }
 #ifdef OSG_GL_MATRICES_AVAILABLE
@@ -1623,6 +1632,7 @@ void State::loadModelViewMatrix()
     if (_useModelViewAndProjectionUniforms)
     {
         if (_modelViewMatrixUniform.valid()) _modelViewMatrixUniform->set(*_modelView);
+        if (_modelViewMatrixInverseUniform.valid()) _modelViewMatrixInverseUniform->set(osg::Matrix::inverse( * _modelView));
         updateModelViewAndProjectionMatrixUniforms();
     }
 
@@ -1658,7 +1668,11 @@ void State::applyModelViewMatrix(const osg::Matrix& matrix)
 
 void State::updateModelViewAndProjectionMatrixUniforms()
 {
-    if (_modelViewProjectionMatrixUniform.valid()) _modelViewProjectionMatrixUniform->set((*_modelView) * (*_projection));
+    osg::Matrix model_view = (*_modelView) * (*_projection);
+
+    if (_modelViewProjectionMatrixUniform.valid()) _modelViewProjectionMatrixUniform->set(model_view);
+    if (_modelViewProjectionMatrixInverseUniform.valid()) _modelViewProjectionMatrixInverseUniform->set(osg::Matrix::inverse(model_view));
+    
     if (_normalMatrixUniform.valid())
     {
         Matrix mv(*_modelView);

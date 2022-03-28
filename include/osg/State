@@ -274,6 +274,10 @@ class OSG_EXPORT State : public Referenced
         osg::Uniform* getModelViewProjectionMatrixUniform() { return _modelViewProjectionMatrixUniform.get(); }
         osg::Uniform* getNormalMatrixUniform() { return _normalMatrixUniform.get(); }
 
+        osg::Uniform* getModelViewMatrixInverseUniform() { return _modelViewMatrixInverseUniform.get(); }
+        osg::Uniform* getProjectionMatrixInverseUniform() { return _projectionMatrixInverseUniform.get(); }
+        osg::Uniform* getModelViewProjectionMatrixInverseUniform() { return _modelViewProjectionMatrixInverseUniform.get(); }
+
 
         Polytope getViewFrustum() const;
 
@@ -1168,6 +1172,10 @@ class OSG_EXPORT State : public Referenced
         ref_ptr<Uniform>            _projectionMatrixUniform;
         ref_ptr<Uniform>            _modelViewProjectionMatrixUniform;
         ref_ptr<Uniform>            _normalMatrixUniform;
+
+        ref_ptr<Uniform>            _modelViewMatrixInverseUniform;
+        ref_ptr<Uniform>            _projectionMatrixInverseUniform;
+        ref_ptr<Uniform>            _modelViewProjectionMatrixInverseUniform;
 
         Matrix                      _initialInverseViewMatrix;
 
