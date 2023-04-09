@@ -1,0 +1,80 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "BUILD_OSG_DEPRECATED_SERIALIZERS",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "OSG_USE_DEPRECATED_API",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "BUILD_OSG_APPLICATIONS",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "DYNAMIC_OPENSCENEGRAPH",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "DYNAMIC_OPENTHREADS",
+          "value": "False",
+          "type": "BOOL"
+        }
+      ]
+    },
+    {
+      "name": "x64-Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "BUILD_OSG_DEPRECATED_SERIALIZERS",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "OSG_USE_DEPRECATED_API",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "BUILD_OSG_APPLICATIONS",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "DYNAMIC_OPENSCENEGRAPH",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "DYNAMIC_OPENTHREADS",
+          "value": "False",
+          "type": "BOOL"
+        }
+      ]
+    }
+  ]
+}

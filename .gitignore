@@ -105,4 +105,3 @@ _CPack_Packages/
 config.yaml
 _build
 /out
-/CMakeSettings.json
