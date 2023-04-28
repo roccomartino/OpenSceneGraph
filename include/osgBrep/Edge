@@ -1,0 +1,78 @@
+/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the openscenegraph.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+#ifndef OSGBREP_EDGE
+#define OSGBREP_EDGE 
+
+
+#include <osgBrep/Vertex>
+
+
+namespace osgBrep {
+
+
+    class OSGBREP_EXPORT Edge : public osg::Object
+    {
+    public:
+
+        META_Object(osgBrep, Edge);
+
+        Edge();
+        Edge(const Edge& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+
+    protected:
+        ~Edge();
+
+
+    public:
+        inline void setStart(Vertex* vertex)
+        {
+            _start = vertex;
+        }
+
+        inline Vertex* getStart()
+        {
+            return _start;
+        }
+
+        inline const Vertex* getStart() const
+        {
+            return _start;
+        }
+
+
+        inline void setEnd(Vertex* vertex)
+        {
+            _end = vertex;
+        }
+
+        inline Vertex* getEnd()
+        {
+            return _end;
+        }
+
+        inline const Vertex* getEnd() const
+        {
+            return _end;
+        }
+
+
+    private:
+        osg::ref_ptr<Vertex> _start;
+        osg::ref_ptr<Vertex> _end;
+    };
+
+}
+
+#endif

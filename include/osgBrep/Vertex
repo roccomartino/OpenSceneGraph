@@ -11,8 +11,8 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSG_BREP
-#define OSG_BREP 
+#ifndef OSGBREP_VERTEX
+#define OSGBREP_VERTEX 
 
 
 #include <osg/Geode>
