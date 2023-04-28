@@ -12,6 +12,7 @@
 */
 
 #include <osgBrep/Brep>
+#include <osg/Geometry>
 
 
 osgBrep::Brep::Brep()
@@ -43,6 +44,19 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 					vertexDestination.push_back(clonedVertex);
 				}
 			};
+
+
+			for each (auto vertex in _vertices)
+			{
+				add_if_not_present(vertex);
+			}
+
+
+			for each (auto edge in _edges)
+			{
+				add_if_not_present(edge->getStart());
+				add_if_not_present(edge->getEnd());
+			}
 
 
 			for each (auto face in other._faces)
@@ -82,6 +96,12 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 				{
 					add_if_not_present(edge->getEdge());
 				}
+			}
+
+
+			for each (auto edge in _edges)
+			{
+				add_if_not_present(edge);
 			}
 		}
 
@@ -171,29 +191,53 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 
 
 
+
+		auto find_vertex_clone = [&vertexSource, &vertexDestination](Vertex* vertex) -> Vertex*
+		{
+			auto position = std::find(std::begin(vertexSource), std::end(vertexSource), vertex);
+			auto idx = position - std::begin(vertexSource);
+
+			return vertexDestination[idx];
+		};
+
+		auto find_edge_clone = [&edgeSource, &edgeDestination](Edge* edge) -> Edge*
+		{
+			auto position = std::find(std::begin(edgeSource), std::end(edgeSource), edge);
+			auto idx = position - std::begin(edgeSource);
+
+			return edgeDestination[idx];
+		};
+
+		auto find_oriented_edge_clone = [&orientedEdgeSource, &orientedEdgeDestination](OrientedEdge* orientedEdge) -> OrientedEdge*
+		{
+			auto position = std::find(std::begin(orientedEdgeSource), std::end(orientedEdgeSource), orientedEdge);
+			auto idx = position - std::begin(orientedEdgeSource);
+
+			return orientedEdgeDestination[idx];
+		};
+
+		auto find_edge_loop_clone = [&edgeLoopSource, &edgeLoopDestination](EdgeLoop* edgeLoop) -> EdgeLoop*
+		{
+			auto position = std::find(std::begin(edgeLoopSource), std::end(edgeLoopSource), edgeLoop);
+			auto idx = position - std::begin(edgeLoopSource);
+
+			return edgeLoopDestination[idx];
+		};
+
+
 		//
 		// Find shared vertices
 		//
+		for (auto i = 0; i < edgeSource.size(); i++)
 		{
-			auto find_clone = [&vertexSource, &vertexDestination](Vertex* vertex) -> Vertex*
-			{
-				auto position = std::find(std::begin(vertexSource), std::end(vertexSource), vertex);
-				auto idx = position - std::begin(vertexSource);
+			auto source = edgeSource[i];
+			auto destination = edgeDestination[i];
 
-				return vertexDestination[idx];
-			};
+			auto clonedStart = find_vertex_clone(source->getStart());
+			auto clonedEnd = find_vertex_clone(source->getEnd());
 
-			for (auto i = 0; i < edgeSource.size(); i++)
-			{
-				auto source = edgeSource[i];
-				auto destination = edgeDestination[i];
-
-				auto clonedStart = find_clone(source->getStart());
-				auto clonedEnd = find_clone(source->getEnd());
-
-				destination->setStart(clonedStart);
-				destination->setEnd(clonedEnd);
-			}
+			destination->setStart(clonedStart);
+			destination->setEnd(clonedEnd);
 		}
 
 
@@ -201,24 +245,14 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 		//
 		// Find shared edges
 		//
+		for (auto i = 0; i < orientedEdgeSource.size(); i++)
 		{
-			auto find_clone = [&edgeSource, &edgeDestination](Edge* edge) -> Edge*
-			{
-				auto position = std::find(std::begin(edgeSource), std::end(edgeSource), edge);
-				auto idx = position - std::begin(edgeSource);
+			auto source = orientedEdgeSource[i];
+			auto destination = orientedEdgeDestination[i];
 
-				return edgeDestination[idx];
-			};
+			auto cloned = find_edge_clone(source->getEdge());
 
-			for (auto i = 0; i < orientedEdgeSource.size(); i++)
-			{
-				auto source = orientedEdgeSource[i];
-				auto destination = orientedEdgeDestination[i];
-
-				auto cloned = find_clone(source->getEdge());
-
-				destination->setEdge(cloned);
-			}
+			destination->setEdge(cloned);
 		}
 
 
@@ -227,14 +261,6 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 		// Find shared oriented edges
 		//
 		{
-			auto find_clone = [&orientedEdgeSource, &orientedEdgeDestination](OrientedEdge* orientedEdge) -> OrientedEdge*
-			{
-				auto position = std::find(std::begin(orientedEdgeSource), std::end(orientedEdgeSource), orientedEdge);
-				auto idx = position - std::begin(orientedEdgeSource);
-
-				return orientedEdgeDestination[idx];
-			};
-
 			for (auto i = 0; i < edgeLoopSource.size(); i++)
 			{
 				auto source = edgeLoopSource[i];
@@ -244,7 +270,7 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 
 				for each (auto orientedEdge in source->getOrientedEdges())
 				{
-					auto cloned = find_clone(orientedEdge);
+					auto cloned = find_oriented_edge_clone(orientedEdge);
 					destination->addOrientedEdge(cloned);
 				}
 			}
@@ -256,35 +282,41 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 		// Find shared edge loops
 		//
 		{
-			auto find_clone = [&edgeLoopSource, &edgeLoopDestination](EdgeLoop* edgeLoop) -> EdgeLoop*
-			{
-				auto position = std::find(std::begin(edgeLoopSource), std::end(edgeLoopSource), edgeLoop);
-				auto idx = position - std::begin(edgeLoopSource);
-
-				return edgeLoopDestination[idx];
-			};
-
 			for (auto i = 0; i < faceSource.size(); i++)
 			{
 				auto source = faceSource[i];
 				auto destination = faceDestination[i];
 
-				auto cloned = find_clone(source->getEdgeLoop());
+				auto cloned = find_edge_loop_clone(source->getEdgeLoop());
 				destination->setEdgeLoop(cloned);
 			}
 		}
 
 
 
+		_vertices.clear();
+		_edges.clear();
 		_faces.clear();
 
+		for each (auto vertex in other._vertices)
+			addVertex(find_vertex_clone(vertex));
+
+		for each (auto edge in other._edges)
+			addEdge(find_edge_clone(edge));
 
 		for each (auto face in faceDestination)
-			_faces.push_back(face);
+			addFace(face);
 	}
 }
 
 
 osgBrep::Brep::~Brep()
 {
+}
+
+
+void
+osgBrep::Brep::Compile()
+{
+	removeDrawables(0, getNumDrawables());
 }

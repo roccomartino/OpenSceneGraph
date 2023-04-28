@@ -50,8 +50,42 @@ namespace osgBrep {
         }
 
 
+        inline void addEdge(Edge* edge)
+        {
+            _edges.push_back(edge);
+        }
+
+        inline void removeEdge(Edge* edge)
+        {
+            auto itr = std::find(std::begin(_edges), std::end(_edges), edge);
+
+            if (itr != std::end(_edges))
+                _edges.erase(itr);
+        }
+
+
+        inline void addVertex(Vertex* vertex)
+        {
+            _vertices.push_back(vertex);
+        }
+
+        inline void removeVertex(Vertex* vertex)
+        {
+            auto itr = std::find(std::begin(_vertices), std::end(_vertices), vertex);
+
+            if (itr != std::end(_vertices))
+                _vertices.erase(itr);
+        }
+
+
+    public:
+        void Compile();
+
+
     private:
         std::vector<osg::ref_ptr<Face>> _faces;
+        std::vector<osg::ref_ptr<Edge>> _edges;
+        std::vector<osg::ref_ptr<Vertex>> _vertices;
     };
 
 }
