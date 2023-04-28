@@ -11,27 +11,27 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include <osgBrep/Edge>
+#include <osgBrep/OrientedEdge>
 
 
-osgBrep::Edge::Edge()
+osgBrep::OrientedEdge::OrientedEdge():
+	_orientation(true)
 {
 }
 
 
-osgBrep::Edge::Edge(const Edge& other, const osg::CopyOp& copyop) :
+osgBrep::OrientedEdge::OrientedEdge(const OrientedEdge& other, const osg::CopyOp& copyop) :
 	osg::Object(other, copyop),
-	_start(other._start),
-	_end(other._end)
+	_edge(other._edge),
+	_orientation(other._orientation)
 {
 	if (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS)
 	{
-		_start = osg::clone(other._start.get(), copyop);
-		_end = osg::clone(other._end.get(), copyop);
+		_edge = osg::clone(other._edge.get(), copyop);
 	}
 }
 
 
-osgBrep::Edge::~Edge()
+osgBrep::OrientedEdge::~OrientedEdge()
 {
 }
