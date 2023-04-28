@@ -316,7 +316,45 @@ osgBrep::Brep::~Brep()
 
 
 void
-osgBrep::Brep::Compile()
+osgBrep::Brep::compile()
 {
 	removeDrawables(0, getNumDrawables());
+}
+
+
+void
+osgBrep::Brep::compileVertices()
+{
+	auto geometry = new osg::Geometry();
+
+	auto vertexArray = new osg::Vec3Array();
+
+	geometry->setVertexArray(vertexArray);
+
+
+	for each (auto vertex in _vertices)
+		vertexArray->push_back(vertex->getPosition());
+
+	geometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, vertexArray->size()));
+}
+
+
+
+void
+osgBrep::Brep::compileEdges()
+{
+	auto geometry = new osg::Geometry();
+
+	auto vertexArray = new osg::Vec3Array();
+
+	geometry->setVertexArray(vertexArray);
+
+
+	for each (auto edge in _edges)
+	{
+		vertexArray->push_back(edge->getStart()->getPosition());
+		vertexArray->push_back(edge->getEnd()->getPosition());
+	}
+
+	geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES, 0, vertexArray->size()));
 }

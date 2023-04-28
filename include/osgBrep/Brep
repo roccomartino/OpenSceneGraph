@@ -79,7 +79,12 @@ namespace osgBrep {
 
 
     public:
-        void Compile();
+        void compile();
+
+
+    private:
+        void compileVertices();
+        void compileEdges();
 
 
     private:
