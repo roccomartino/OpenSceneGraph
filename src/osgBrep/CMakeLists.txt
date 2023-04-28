@@ -1,0 +1,28 @@
+
+IF(DYNAMIC_OPENSCENEGRAPH)
+    ADD_DEFINITIONS(-DOSGBREP_LIBRARY)
+ELSE()
+    ADD_DEFINITIONS(-DOSG_LIBRARY_STATIC)
+ENDIF()
+
+SET(LIB_NAME osgBrep)
+SET(HEADER_PATH ${OpenSceneGraph_SOURCE_DIR}/include/${LIB_NAME})
+SET(TARGET_H
+    ${HEADER_PATH}/Export
+    ${HEADER_PATH}/Version
+)
+
+# FIXME: For OS X, need flag for Framework or dylib
+SET(TARGET_SRC
+    Version.cpp
+    ${OPENSCENEGRAPH_VERSIONINFO_RC}
+)
+
+SET(TARGET_LIBRARIES
+    osg
+    OpenThreads
+)
+
+SET(COMPONENT_PKGCONFIG_DESCRIPTION "A library for creating BRep with OpenSceneGraph")
+
+SETUP_LIBRARY(${LIB_NAME})
