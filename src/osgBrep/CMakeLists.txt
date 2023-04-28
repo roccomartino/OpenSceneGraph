@@ -8,6 +8,7 @@ ENDIF()
 SET(LIB_NAME osgBrep)
 SET(HEADER_PATH ${OpenSceneGraph_SOURCE_DIR}/include/${LIB_NAME})
 SET(TARGET_H
+    ${HEADER_PATH}/Brep
     ${HEADER_PATH}/Face
     ${HEADER_PATH}/Edge
     ${HEADER_PATH}/EdgeLoop
@@ -19,6 +20,7 @@ SET(TARGET_H
 
 # FIXME: For OS X, need flag for Framework or dylib
 SET(TARGET_SRC
+    Brep.cpp
     Face.cpp
     Edge.cpp
     EdgeLoop.cpp

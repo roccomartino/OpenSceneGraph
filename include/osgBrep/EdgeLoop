@@ -49,6 +49,16 @@ namespace osgBrep {
                 _orientedEdges.erase(itr);
         }
 
+        inline const std::vector<osg::ref_ptr<OrientedEdge>> getOrientedEdges() const
+        {
+            return _orientedEdges;
+        }
+
+        inline void Clear()
+        {
+            _orientedEdges.clear();
+        }
+
 
     private:
         std::vector<osg::ref_ptr<OrientedEdge>> _orientedEdges;

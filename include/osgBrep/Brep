@@ -1,0 +1,59 @@
+/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the openscenegraph.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+#ifndef OSGBREP_BREP
+#define OSGBREP_BREP 
+
+
+#include <osgBrep/Face>
+
+
+namespace osgBrep {
+
+
+    class OSGBREP_EXPORT Brep : public osg::Geode
+    {
+    public:
+
+        META_Object(osgBrep, Brep);
+
+        Brep();
+        Brep(const Brep& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+
+    protected:
+        ~Brep();
+
+
+    public:
+        inline void addFace(Face* face)
+        {
+            _faces.push_back(face);
+        }
+
+        inline void removeFace(Face* face)
+        {
+            auto itr = std::find(std::begin(_faces), std::end(_faces), face);
+
+            if (itr != std::end(_faces))
+                _faces.erase(itr);
+        }
+
+
+    private:
+        std::vector<osg::ref_ptr<Face>> _faces;
+    };
+
+}
+
+#endif
