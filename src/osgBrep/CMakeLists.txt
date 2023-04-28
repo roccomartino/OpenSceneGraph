@@ -8,12 +8,14 @@ ENDIF()
 SET(LIB_NAME osgBrep)
 SET(HEADER_PATH ${OpenSceneGraph_SOURCE_DIR}/include/${LIB_NAME})
 SET(TARGET_H
+    ${HEADER_PATH}/Vertex
     ${HEADER_PATH}/Export
     ${HEADER_PATH}/Version
 )
 
 # FIXME: For OS X, need flag for Framework or dylib
 SET(TARGET_SRC
+    Vertex.cpp
     Version.cpp
     ${OPENSCENEGRAPH_VERSIONINFO_RC}
 )

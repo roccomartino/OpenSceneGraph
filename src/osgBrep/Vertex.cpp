@@ -11,19 +11,21 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGBREP_VERSION
-#define OSGBREP_VERSION 1
-
-#include <osgBrep/Export>
+#include <osgBrep/Vertex>
 
 
-extern "C" {
-
-extern OSGBREP_EXPORT const char* osgBrepGetVersion();
-
-extern OSGBREP_EXPORT const char* osgBrepGetLibraryName();
-
+osgBrep::Vertex::Vertex()
+{
 }
 
-#endif
 
+osgBrep::Vertex::Vertex(const Vertex& other, const osg::CopyOp& copyop):
+	osg::Object(other, copyop),
+	_position(other._position)
+{
+}
+
+
+osgBrep::Vertex::~Vertex()
+{
+}
