@@ -9,6 +9,7 @@ SET(LIB_NAME osgBrep)
 SET(HEADER_PATH ${OpenSceneGraph_SOURCE_DIR}/include/${LIB_NAME})
 SET(TARGET_H
     ${HEADER_PATH}/Edge
+    ${HEADER_PATH}/EdgeLoop
     ${HEADER_PATH}/OrientedEdge
     ${HEADER_PATH}/Vertex
     ${HEADER_PATH}/Export
@@ -18,6 +19,7 @@ SET(TARGET_H
 # FIXME: For OS X, need flag for Framework or dylib
 SET(TARGET_SRC
     Edge.cpp
+    EdgeLoop.cpp
     OrientedEdge.cpp
     Vertex.cpp
     Version.cpp

@@ -1,0 +1,59 @@
+/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the openscenegraph.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+#ifndef OSGBREP_EDGELOOP
+#define OSGBREP_EDGELOOP
+
+
+#include <osgBrep/OrientedEdge>
+
+
+namespace osgBrep {
+
+
+    class OSGBREP_EXPORT EdgeLoop : public osg::Object
+    {
+    public:
+
+        META_Object(osgBrep, EdgeLoop);
+
+        EdgeLoop();
+        EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+
+    protected:
+        ~EdgeLoop();
+
+
+    public:
+        inline void addOrientedEdge(OrientedEdge* orientedEdge)
+        {
+            _orientedEdges.push_back(orientedEdge);
+        }
+
+        inline void removeOrientedEdge(OrientedEdge* orientedEdge)
+        {
+            auto itr = std::find(std::begin(_orientedEdges), std::end(_orientedEdges), orientedEdge);
+
+            if (itr != std::end(_orientedEdges))
+                _orientedEdges.erase(itr);
+        }
+
+
+    private:
+        std::vector<osg::ref_ptr<OrientedEdge>> _orientedEdges;
+    };
+
+}
+
+#endif
