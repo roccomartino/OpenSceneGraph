@@ -26,7 +26,7 @@ osgBrep::Face::Face(const Face& other, const osg::CopyOp& copyop) :
 	_normal(other._normal)
 {
 	if (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS)
-		_edgeLoop = (EdgeLoop*)other._edgeLoop->clone(osg::CopyOp::DEEP_COPY_ALL);
+		_edgeLoop = (EdgeLoop*)other._edgeLoop->clone(copyop);
 }
 
 

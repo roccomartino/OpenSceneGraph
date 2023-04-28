@@ -28,13 +28,13 @@ osgBrep::EdgeLoop::EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop) :
 		std::vector<Vertex*> vertexSource;
 		std::vector<Vertex*> vertexDestination;
 		{
-			auto add_if_not_present = [&vertexSource, &vertexDestination](Vertex* vertex)
+			auto add_if_not_present = [&vertexSource, &vertexDestination, &copyop](Vertex* vertex)
 			{
 				auto position = std::find(std::begin(vertexSource), std::end(vertexSource), vertex);
 
 				if (position == std::end(vertexSource))
 				{
-					auto clonedVertex = (Vertex*)vertex->clone(osg::CopyOp::DEEP_COPY_ALL);
+					auto clonedVertex = (Vertex*)vertex->clone(copyop);
 
 					vertexSource.push_back(vertex);
 					vertexDestination.push_back(clonedVertex);
@@ -56,7 +56,7 @@ osgBrep::EdgeLoop::EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop) :
 
 		for each (auto edge in other._orientedEdges)
 		{
-			auto clonedEdge = (OrientedEdge*)edge->clone(osg::CopyOp::DEEP_COPY_ALL);
+			auto clonedEdge = (OrientedEdge*)edge->clone(copyop);
 
 			auto startPosition = std::find(std::begin(vertexSource), std::end(vertexSource), edge->getEdge()->getStart());
 			auto endPosition = std::find(std::begin(vertexSource), std::end(vertexSource), edge->getEdge()->getEnd());
