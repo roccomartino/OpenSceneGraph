@@ -13,6 +13,7 @@
 
 #include <osgBrep/Brep>
 #include <osg/Geometry>
+#include <osg/Point>
 
 
 osgBrep::Brep::Brep()
@@ -331,16 +332,31 @@ osgBrep::Brep::compileVertices()
 	auto geometry = new osg::Geometry();
 
 	auto vertexArray = new osg::Vec3Array();
+	auto colorArray = new osg::Vec4Array();
 
 	geometry->setVertexArray(vertexArray);
+	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
 
 
 	for each (auto vertex in _vertices)
-		vertexArray->push_back(vertex->getPosition());
+	{
+		auto position = vertex->getPosition();
+		
+		vertexArray->push_back(position);
+
+		colorArray->push_back(osg::Vec4(0, 0, 0, 1));
+	}
 
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, vertexArray->size()));
 
 	addDrawable(geometry);
+
+
+	auto stateSet = geometry->getOrCreateStateSet();
+
+	stateSet->setAttributeAndModes(new osg::Point(4), osg::StateAttribute::ON);
+	
+	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 }
 
 
