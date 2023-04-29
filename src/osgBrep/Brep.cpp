@@ -319,6 +319,9 @@ void
 osgBrep::Brep::compile()
 {
 	removeDrawables(0, getNumDrawables());
+
+	compileVertices();
+	compileEdges();
 }
 
 
@@ -336,6 +339,8 @@ osgBrep::Brep::compileVertices()
 		vertexArray->push_back(vertex->getPosition());
 
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, vertexArray->size()));
+
+	addDrawable(geometry);
 }
 
 
@@ -357,4 +362,6 @@ osgBrep::Brep::compileEdges()
 	}
 
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES, 0, vertexArray->size()));
+
+	addDrawable(geometry);
 }
