@@ -36,30 +36,15 @@ namespace osgBrep {
 
 
     public:
-        inline void setEdgeLoop(EdgeLoop* edgeLoop)
-        {
-            _edgeLoop = edgeLoop;
-        }
+        void setEdgeLoop(EdgeLoop* edgeLoop);
 
-        inline EdgeLoop* getEdgeLoop()
-        {
-            return _edgeLoop;
-        }
+        EdgeLoop* getEdgeLoop();
 
-        inline const EdgeLoop* getEdgeLoop() const
-        {
-            return _edgeLoop;
-        }
+        const EdgeLoop* getEdgeLoop() const;
 
-        inline void setNormal(const osg::Vec3d& normal)
-        {
-            _normal = normal;
-        }
+        void setNormal(const osg::Vec3d& normal);
 
-        inline const osg::Vec3& getNormal() const
-        {
-            return _normal;
-        }
+        const osg::Vec3& getNormal() const;
 
 
     private:

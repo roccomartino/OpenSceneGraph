@@ -33,3 +33,29 @@ osgBrep::Face::Face(const Face& other, const osg::CopyOp& copyop) :
 osgBrep::Face::~Face()
 {
 }
+
+
+void osgBrep::Face::setEdgeLoop(EdgeLoop* edgeLoop)
+{
+    _edgeLoop = edgeLoop;
+}
+
+osgBrep::EdgeLoop* osgBrep::Face::getEdgeLoop()
+{
+    return _edgeLoop;
+}
+
+const osgBrep::EdgeLoop* osgBrep::Face::getEdgeLoop() const
+{
+    return _edgeLoop;
+}
+
+void osgBrep::Face::setNormal(const osg::Vec3d& normal)
+{
+    _normal = normal;
+}
+
+const osg::Vec3& osgBrep::Face::getNormal() const
+{
+    return _normal;
+}
