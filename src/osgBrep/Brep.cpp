@@ -15,6 +15,8 @@
 #include <osg/Geometry>
 #include <osg/Point>
 #include <osg/LineWidth>
+#include <osg/PolygonOffset>
+#include <osg/Depth>
 
 
 osgBrep::Brep::Brep()
@@ -268,7 +270,7 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 				auto source = edgeLoopSource[i];
 				auto destination = edgeLoopDestination[i];
 
-				destination->Clear();
+				destination->clear();
 
 				for each (auto orientedEdge in source->getOrientedEdges())
 				{
@@ -322,8 +324,9 @@ osgBrep::Brep::compile()
 {
 	removeDrawables(0, getNumDrawables());
 
-	compileVertices();
+	compileFaces();
 	compileEdges();
+	compileVertices();
 }
 
 
@@ -397,6 +400,115 @@ osgBrep::Brep::compileEdges()
 	stateSet->setAttributeAndModes(new osg::LineWidth(2), osg::StateAttribute::ON);
 
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+}
+
+
+
+void
+osgBrep::Brep::compileFaces()
+{
+	auto geometry = new osg::Geometry();
+
+	auto vertexArray = new osg::Vec3Array();
+	auto normalArray = new osg::Vec3Array();
+	auto colorArray = new osg::Vec4Array();
+
+	geometry->setVertexArray(vertexArray);
+	geometry->setNormalArray(normalArray, osg::Array::BIND_PER_VERTEX);
+	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
+
+
+
+	auto compileTriangle = [&vertexArray, &normalArray, &colorArray](Face* face)
+	{
+		auto edges = face->getEdgeLoop()->getOrientedEdges();
+		auto normal = face->getNormal();
+
+		auto p0 = edges[0]->getOrientedStart()->getPosition();
+		auto p1 = edges[1]->getOrientedStart()->getPosition();
+		auto p2 = edges[2]->getOrientedStart()->getPosition();
+
+		vertexArray->push_back(p0);
+		vertexArray->push_back(p1);
+		vertexArray->push_back(p2);
+
+		normalArray->push_back(normal);
+		normalArray->push_back(normal);
+		normalArray->push_back(normal);
+
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+	};
+
+	auto compileQuad = [&vertexArray, &normalArray, &colorArray](Face* face)
+	{
+		auto edges = face->getEdgeLoop()->getOrientedEdges();
+		auto normal = face->getNormal();
+
+		auto p0 = edges[0]->getOrientedStart()->getPosition();
+		auto p1 = edges[1]->getOrientedStart()->getPosition();
+		auto p2 = edges[2]->getOrientedStart()->getPosition();
+		auto p3 = edges[3]->getOrientedStart()->getPosition();
+
+		vertexArray->push_back(p0);
+		vertexArray->push_back(p1);
+		vertexArray->push_back(p2);
+		vertexArray->push_back(p0);
+		vertexArray->push_back(p2);
+		vertexArray->push_back(p3);
+
+		normalArray->push_back(normal);
+		normalArray->push_back(normal);
+		normalArray->push_back(normal);
+		normalArray->push_back(normal);
+		normalArray->push_back(normal);
+		normalArray->push_back(normal);
+
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+	};
+
+
+	for each (auto face in _faces)
+	{
+		auto loop = face->getEdgeLoop();
+
+
+		if (!loop->isLoop())
+			continue;
+
+
+		switch (loop->getOrientedEdges().size())
+		{
+		case 3:
+			compileTriangle(face);
+			break;
+
+		case 4:
+			compileQuad(face);
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	geometry->addPrimitiveSet(new osg::DrawArrays(GL_TRIANGLES, 0, vertexArray->size()));
+
+	addDrawable(geometry);
+
+
+	auto stateSet = geometry->getOrCreateStateSet();
+
+	stateSet->setAttributeAndModes(new osg::PolygonOffset(1, 1), osg::StateAttribute::ON);
+
+	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+	stateSet->setMode(GL_POLYGON_OFFSET_FILL, osg::StateAttribute::ON);
 }
 
 

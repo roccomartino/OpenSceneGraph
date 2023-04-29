@@ -58,6 +58,7 @@ namespace osgBrep {
     private:
         void compileVertices();
         void compileEdges();
+        void compileFaces();
 
 
     private:

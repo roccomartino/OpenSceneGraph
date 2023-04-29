@@ -97,7 +97,29 @@ const std::vector<osg::ref_ptr<osgBrep::OrientedEdge>>& osgBrep::EdgeLoop::getOr
 	return _orientedEdges;
 }
 
-void osgBrep::EdgeLoop::Clear()
+void osgBrep::EdgeLoop::clear()
 {
 	_orientedEdges.clear();
+}
+
+bool osgBrep::EdgeLoop::isLoop() const
+{
+	auto numEdges = _orientedEdges.size();
+
+	for (int i = 0; i < numEdges; i++)
+	{
+		auto currentOriented = _orientedEdges[i];
+		auto nextOriented = _orientedEdges[(i + 1) % numEdges];
+
+		auto currentEdge = currentOriented->getEdge();
+		auto nextEdge = nextOriented->getEdge();
+
+		auto vertexA = currentOriented->getOrientedEnd();
+		auto vertexB = nextOriented->getOrientedStart();
+
+		if (vertexA != vertexB)
+			return false;
+	}
+
+	return true;
 }

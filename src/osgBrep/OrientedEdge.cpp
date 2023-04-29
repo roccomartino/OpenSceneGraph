@@ -63,3 +63,13 @@ bool osgBrep::OrientedEdge::getOrientation() const
 {
     return _orientation;
 }
+
+const osgBrep::Vertex* osgBrep::OrientedEdge::getOrientedStart() const
+{
+	return _orientation ? _edge->getStart() : _edge->getEnd();
+}
+
+const osgBrep::Vertex* osgBrep::OrientedEdge::getOrientedEnd() const
+{
+	return _orientation ? _edge->getEnd() : _edge->getStart();
+}

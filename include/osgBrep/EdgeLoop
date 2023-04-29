@@ -42,7 +42,9 @@ namespace osgBrep {
 
         const std::vector<osg::ref_ptr<OrientedEdge>>& getOrientedEdges() const;
 
-        void Clear();
+        void clear();
+
+        bool isLoop() const;
 
 
     private:
