@@ -35,3 +35,31 @@ osgBrep::OrientedEdge::OrientedEdge(const OrientedEdge& other, const osg::CopyOp
 osgBrep::OrientedEdge::~OrientedEdge()
 {
 }
+
+
+
+void osgBrep::OrientedEdge::setEdge(Edge* edge)
+{
+    _edge = edge;
+}
+
+osgBrep::Edge* osgBrep::OrientedEdge::getEdge()
+{
+    return _edge;
+}
+
+const osgBrep::Edge* osgBrep::OrientedEdge::getEdge() const
+{
+    return _edge;
+}
+
+
+void osgBrep::OrientedEdge::setOrientation(bool orientation)
+{
+    _orientation = orientation;
+}
+
+bool osgBrep::OrientedEdge::getOrientation() const
+{
+    return _orientation;
+}

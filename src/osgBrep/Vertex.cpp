@@ -29,3 +29,14 @@ osgBrep::Vertex::Vertex(const Vertex& other, const osg::CopyOp& copyop):
 osgBrep::Vertex::~Vertex()
 {
 }
+
+
+void osgBrep::Vertex::setPosition(const osg::Vec3d& position)
+{
+    _position = position;
+}
+
+const osg::Vec3& osgBrep::Vertex::getPosition() const
+{
+    return _position;
+}

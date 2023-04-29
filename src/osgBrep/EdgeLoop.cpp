@@ -76,3 +76,28 @@ osgBrep::EdgeLoop::EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop) :
 osgBrep::EdgeLoop::~EdgeLoop()
 {
 }
+
+
+
+void osgBrep::EdgeLoop::addOrientedEdge(OrientedEdge* orientedEdge)
+{
+	_orientedEdges.push_back(orientedEdge);
+}
+
+void osgBrep::EdgeLoop::removeOrientedEdge(OrientedEdge* orientedEdge)
+{
+	auto itr = std::find(std::begin(_orientedEdges), std::end(_orientedEdges), orientedEdge);
+
+	if (itr != std::end(_orientedEdges))
+		_orientedEdges.erase(itr);
+}
+
+const std::vector<osg::ref_ptr<osgBrep::OrientedEdge>>& osgBrep::EdgeLoop::getOrientedEdges() const
+{
+	return _orientedEdges;
+}
+
+void osgBrep::EdgeLoop::Clear()
+{
+	_orientedEdges.clear();
+}

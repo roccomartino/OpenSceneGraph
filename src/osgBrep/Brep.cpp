@@ -398,3 +398,46 @@ osgBrep::Brep::compileEdges()
 
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 }
+
+
+
+void osgBrep::Brep::addFace(Face* face)
+{
+	_faces.push_back(face);
+}
+
+void osgBrep::Brep::removeFace(Face* face)
+{
+	auto itr = std::find(std::begin(_faces), std::end(_faces), face);
+
+	if (itr != std::end(_faces))
+		_faces.erase(itr);
+}
+
+
+void osgBrep::Brep::addEdge(Edge* edge)
+{
+	_edges.push_back(edge);
+}
+
+void osgBrep::Brep::removeEdge(Edge* edge)
+{
+	auto itr = std::find(std::begin(_edges), std::end(_edges), edge);
+
+	if (itr != std::end(_edges))
+		_edges.erase(itr);
+}
+
+
+void osgBrep::Brep::addVertex(Vertex* vertex)
+{
+	_vertices.push_back(vertex);
+}
+
+void osgBrep::Brep::removeVertex(Vertex* vertex)
+{
+	auto itr = std::find(std::begin(_vertices), std::end(_vertices), vertex);
+
+	if (itr != std::end(_vertices))
+		_vertices.erase(itr);
+}

@@ -36,31 +36,16 @@ namespace osgBrep {
 
 
     public:
-        inline void setEdge(Edge* edge)
-        {
-            _edge = edge;
-        }
+        void setEdge(Edge* edge);
 
-        inline Edge* getEdge()
-        {
-            return _edge;
-        }
+        Edge* getEdge();
 
-        inline const Edge* getEdge() const
-        {
-            return _edge;
-        }
+        const Edge* getEdge() const;
 
 
-        inline void setOrientation(bool orientation)
-        {
-            _orientation = orientation;
-        }
+        void setOrientation(bool orientation);
 
-        inline bool getOrientation() const
-        {
-            return _orientation;
-        }
+        bool getOrientation() const;
 
 
     private:

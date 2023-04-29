@@ -36,46 +36,19 @@ namespace osgBrep {
 
 
     public:
-        inline void addFace(Face* face)
-        {
-            _faces.push_back(face);
-        }
+        void addFace(Face* face);
 
-        inline void removeFace(Face* face)
-        {
-            auto itr = std::find(std::begin(_faces), std::end(_faces), face);
-
-            if (itr != std::end(_faces))
-                _faces.erase(itr);
-        }
+        void removeFace(Face* face);
 
 
-        inline void addEdge(Edge* edge)
-        {
-            _edges.push_back(edge);
-        }
+        void addEdge(Edge* edge);
 
-        inline void removeEdge(Edge* edge)
-        {
-            auto itr = std::find(std::begin(_edges), std::end(_edges), edge);
-
-            if (itr != std::end(_edges))
-                _edges.erase(itr);
-        }
+        void removeEdge(Edge* edge);
 
 
-        inline void addVertex(Vertex* vertex)
-        {
-            _vertices.push_back(vertex);
-        }
+        void addVertex(Vertex* vertex);
 
-        inline void removeVertex(Vertex* vertex)
-        {
-            auto itr = std::find(std::begin(_vertices), std::end(_vertices), vertex);
-
-            if (itr != std::end(_vertices))
-                _vertices.erase(itr);
-        }
+        void removeVertex(Vertex* vertex);
 
 
     public:

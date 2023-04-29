@@ -28,12 +28,12 @@
         },
         {
           "name": "DYNAMIC_OPENSCENEGRAPH",
-          "value": "True",
+          "value": "False",
           "type": "BOOL"
         },
         {
           "name": "DYNAMIC_OPENTHREADS",
-          "value": "True",
+          "value": "False",
           "type": "BOOL"
         }
       ]
@@ -66,12 +66,12 @@
         },
         {
           "name": "DYNAMIC_OPENSCENEGRAPH",
-          "value": "True",
+          "value": "False",
           "type": "BOOL"
         },
         {
           "name": "DYNAMIC_OPENTHREADS",
-          "value": "True",
+          "value": "False",
           "type": "BOOL"
         }
       ]

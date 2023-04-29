@@ -37,15 +37,9 @@ namespace osgBrep {
 
 
     public:
-        inline void setPosition(const osg::Vec3d& position)
-        {
-            _position = position;
-        }
+        void setPosition(const osg::Vec3d& position);
 
-        inline const osg::Vec3& getPosition() const
-        {
-            return _position;
-        }
+        const osg::Vec3& getPosition() const;
 
 
     private:

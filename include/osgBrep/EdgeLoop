@@ -36,28 +36,13 @@ namespace osgBrep {
 
 
     public:
-        inline void addOrientedEdge(OrientedEdge* orientedEdge)
-        {
-            _orientedEdges.push_back(orientedEdge);
-        }
+        void addOrientedEdge(OrientedEdge* orientedEdge);
 
-        inline void removeOrientedEdge(OrientedEdge* orientedEdge)
-        {
-            auto itr = std::find(std::begin(_orientedEdges), std::end(_orientedEdges), orientedEdge);
+        void removeOrientedEdge(OrientedEdge* orientedEdge);
 
-            if (itr != std::end(_orientedEdges))
-                _orientedEdges.erase(itr);
-        }
+        const std::vector<osg::ref_ptr<OrientedEdge>>& getOrientedEdges() const;
 
-        inline const std::vector<osg::ref_ptr<OrientedEdge>> getOrientedEdges() const
-        {
-            return _orientedEdges;
-        }
-
-        inline void Clear()
-        {
-            _orientedEdges.clear();
-        }
+        void Clear();
 
 
     private:
