@@ -355,7 +355,7 @@ osgBrep::Brep::compileVertices()
 
 	auto stateSet = geometry->getOrCreateStateSet();
 
-	stateSet->setAttributeAndModes(new osg::Point(4), osg::StateAttribute::ON);
+	stateSet->setAttributeAndModes(new osg::Point(6), osg::StateAttribute::ON);
 	
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 }
@@ -376,8 +376,12 @@ osgBrep::Brep::compileEdges()
 
 	for each (auto edge in _edges)
 	{
-		vertexArray->push_back(edge->getStart()->getPosition());
-		vertexArray->push_back(edge->getEnd()->getPosition());
+		auto start = edge->getStart()->getPosition();
+		auto end = edge->getEnd()->getPosition();
+;
+
+		vertexArray->push_back(start);
+		vertexArray->push_back(end);
 
 		colorArray->push_back(osg::Vec4(0, 0, 0, 1));
 		colorArray->push_back(osg::Vec4(0, 0, 0, 1));
