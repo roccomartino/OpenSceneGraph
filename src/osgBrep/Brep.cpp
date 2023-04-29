@@ -14,6 +14,7 @@
 #include <osgBrep/Brep>
 #include <osg/Geometry>
 #include <osg/Point>
+#include <osg/LineWidth>
 
 
 osgBrep::Brep::Brep()
@@ -367,17 +368,29 @@ osgBrep::Brep::compileEdges()
 	auto geometry = new osg::Geometry();
 
 	auto vertexArray = new osg::Vec3Array();
+	auto colorArray = new osg::Vec4Array();
 
 	geometry->setVertexArray(vertexArray);
+	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
 
 
 	for each (auto edge in _edges)
 	{
 		vertexArray->push_back(edge->getStart()->getPosition());
 		vertexArray->push_back(edge->getEnd()->getPosition());
+
+		colorArray->push_back(osg::Vec4(0, 0, 0, 1));
+		colorArray->push_back(osg::Vec4(0, 0, 0, 1));
 	}
 
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES, 0, vertexArray->size()));
 
 	addDrawable(geometry);
+
+
+	auto stateSet = geometry->getOrCreateStateSet();
+
+	stateSet->setAttributeAndModes(new osg::LineWidth(2), osg::StateAttribute::ON);
+
+	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 }
