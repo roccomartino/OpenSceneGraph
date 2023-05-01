@@ -297,15 +297,9 @@ class OSG_EXPORT Object : public Referenced
         virtual void releaseGLObjects(osg::State* = 0) const {}
 
 
-        inline void setUuid(const std::string& uuid)
-        {
-            _uuid = uuid;
-        }
+        void setUuid(const std::string& uuid);
 
-        inline const std::string& getUuid() const
-        {
-            return _uuid;
-        }
+        const std::string& getUuid() const;
 
 
     protected:
