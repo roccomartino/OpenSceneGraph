@@ -335,6 +335,8 @@ osgBrep::Brep::compileVertices()
 {
 	auto geometry = new osg::Geometry();
 
+	geometry->setUuid(getUuid());
+
 	auto vertexArray = new osg::Vec3Array();
 	auto colorArray = new osg::Vec4Array();
 
@@ -369,6 +371,8 @@ void
 osgBrep::Brep::compileEdges()
 {
 	auto geometry = new osg::Geometry();
+
+	geometry->setUuid(getUuid());
 
 	auto vertexArray = new osg::Vec3Array();
 	auto colorArray = new osg::Vec4Array();
@@ -409,6 +413,8 @@ osgBrep::Brep::compileFaces()
 {
 	auto geometry = new osg::Geometry();
 
+	geometry->setUuid(getUuid());
+
 	auto vertexArray = new osg::Vec3Array();
 	auto normalArray = new osg::Vec3Array();
 	auto colorArray = new osg::Vec4Array();
@@ -436,9 +442,9 @@ osgBrep::Brep::compileFaces()
 		normalArray->push_back(normal);
 		normalArray->push_back(normal);
 
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
 	};
 
 	auto compileQuad = [&vertexArray, &normalArray, &colorArray](Face* face)
@@ -465,12 +471,12 @@ osgBrep::Brep::compileFaces()
 		normalArray->push_back(normal);
 		normalArray->push_back(normal);
 
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
-		colorArray->push_back(osg::Vec4(0.8, 0.8, 0.8, 1.0));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
 	};
 
 
