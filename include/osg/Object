@@ -297,11 +297,6 @@ class OSG_EXPORT Object : public Referenced
         virtual void releaseGLObjects(osg::State* = 0) const {}
 
 
-        void setUuid(const std::string& uuid);
-
-        const std::string& getUuid() const;
-
-
     protected:
 
         /** Object destructor. Note, is protected so that Objects cannot
@@ -317,8 +312,6 @@ class OSG_EXPORT Object : public Referenced
         DataVariance _dataVariance;
 
         osg::UserDataContainer* _userDataContainer;
-
-        std::string _uuid;
 
     private:
 

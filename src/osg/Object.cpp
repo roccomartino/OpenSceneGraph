@@ -85,15 +85,4 @@ const Referenced* Object::getUserData() const
     return _userDataContainer ? _userDataContainer->getUserData() : 0;
 }
 
-
-void Object::setUuid(const std::string& uuid)
-{
-    _uuid = uuid;
-}
-
-const std::string& Object::getUuid() const
-{
-    return _uuid;
-}
-
 } // end of namespace osg
