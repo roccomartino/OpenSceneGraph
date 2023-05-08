@@ -108,11 +108,8 @@ bool osgBrep::EdgeLoop::isLoop() const
 
 	for (int i = 0; i < numEdges; i++)
 	{
-		auto currentOriented = _orientedEdges[i];
-		auto nextOriented = _orientedEdges[(i + 1) % numEdges];
-
-		auto currentEdge = currentOriented->getEdge();
-		auto nextEdge = nextOriented->getEdge();
+		auto currentOriented = _orientedEdges[i].get();
+		auto nextOriented = _orientedEdges[(i + 1) % numEdges].get();
 
 		auto vertexA = currentOriented->getOrientedEnd();
 		auto vertexB = nextOriented->getOrientedStart();
