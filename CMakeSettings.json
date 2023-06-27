@@ -25,16 +25,6 @@
           "name": "BUILD_OSG_APPLICATIONS",
           "value": "False",
           "type": "BOOL"
-        },
-        {
-          "name": "DYNAMIC_OPENSCENEGRAPH",
-          "value": "False",
-          "type": "BOOL"
-        },
-        {
-          "name": "DYNAMIC_OPENTHREADS",
-          "value": "False",
-          "type": "BOOL"
         }
       ]
     },
@@ -61,16 +51,6 @@
         },
         {
           "name": "BUILD_OSG_APPLICATIONS",
-          "value": "False",
-          "type": "BOOL"
-        },
-        {
-          "name": "DYNAMIC_OPENSCENEGRAPH",
-          "value": "False",
-          "type": "BOOL"
-        },
-        {
-          "name": "DYNAMIC_OPENTHREADS",
           "value": "False",
           "type": "BOOL"
         }
