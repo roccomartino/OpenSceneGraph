@@ -18,6 +18,8 @@
 #include <osg/PolygonOffset>
 #include <osg/Depth>
 
+#include <algorithm>
+
 
 osgBrep::Brep::Brep()
 {
@@ -50,22 +52,22 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 			};
 
 
-			for each (auto vertex in _vertices)
+			for (auto vertex : _vertices)
 			{
 				add_if_not_present(vertex);
 			}
 
 
-			for each (auto edge in _edges)
+			for (auto edge : _edges)
 			{
 				add_if_not_present(edge->getStart());
 				add_if_not_present(edge->getEnd());
 			}
 
 
-			for each (auto face in other._faces)
+			for (auto face : other._faces)
 			{
-				for each (auto edge in face->getEdgeLoop()->getOrientedEdges())
+				for (auto edge : face->getEdgeLoop()->getOrientedEdges())
 				{
 					add_if_not_present(edge->getEdge()->getStart());
 					add_if_not_present(edge->getEdge()->getEnd());
@@ -94,16 +96,16 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 			};
 
 
-			for each (auto face in other._faces)
+			for (auto face : other._faces)
 			{
-				for each (auto edge in face->getEdgeLoop()->getOrientedEdges())
+				for (auto edge : face->getEdgeLoop()->getOrientedEdges())
 				{
 					add_if_not_present(edge->getEdge());
 				}
 			}
 
 
-			for each (auto edge in _edges)
+			for (auto edge : _edges)
 			{
 				add_if_not_present(edge);
 			}
@@ -130,9 +132,9 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 			};
 
 
-			for each (auto face in other._faces)
+			for (auto face : other._faces)
 			{
-				for each (auto orientedEdge in face->getEdgeLoop()->getOrientedEdges())
+				for (auto orientedEdge : face->getEdgeLoop()->getOrientedEdges())
 				{
 					add_if_not_present(orientedEdge);
 				}
@@ -160,7 +162,7 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 			};
 
 
-			for each (auto face in other._faces)
+			for (auto face : other._faces)
 			{
 				add_if_not_present(face->getEdgeLoop());
 			}
@@ -187,7 +189,7 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 			};
 
 
-			for each (auto face in other._faces)
+			for (auto face : other._faces)
 			{
 				add_if_not_present(face);
 			}
@@ -232,7 +234,7 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 		//
 		// Find shared vertices
 		//
-		for (auto i = 0; i < edgeSource.size(); i++)
+		for (auto i = 0u; i < edgeSource.size(); i++)
 		{
 			auto source = edgeSource[i];
 			auto destination = edgeDestination[i];
@@ -249,7 +251,7 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 		//
 		// Find shared edges
 		//
-		for (auto i = 0; i < orientedEdgeSource.size(); i++)
+		for (auto i = 0u; i < orientedEdgeSource.size(); i++)
 		{
 			auto source = orientedEdgeSource[i];
 			auto destination = orientedEdgeDestination[i];
@@ -265,14 +267,14 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 		// Find shared oriented edges
 		//
 		{
-			for (auto i = 0; i < edgeLoopSource.size(); i++)
+			for (auto i = 0u; i < edgeLoopSource.size(); i++)
 			{
 				auto source = edgeLoopSource[i];
 				auto destination = edgeLoopDestination[i];
 
 				destination->clear();
 
-				for each (auto orientedEdge in source->getOrientedEdges())
+				for (auto orientedEdge : source->getOrientedEdges())
 				{
 					auto cloned = find_oriented_edge_clone(orientedEdge);
 					destination->addOrientedEdge(cloned);
@@ -286,7 +288,7 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 		// Find shared edge loops
 		//
 		{
-			for (auto i = 0; i < faceSource.size(); i++)
+			for (auto i = 0u; i < faceSource.size(); i++)
 			{
 				auto source = faceSource[i];
 				auto destination = faceDestination[i];
@@ -302,13 +304,13 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 		_edges.clear();
 		_faces.clear();
 
-		for each (auto vertex in other._vertices)
+		for (auto vertex : other._vertices)
 			addVertex(find_vertex_clone(vertex));
 
-		for each (auto edge in other._edges)
+		for (auto edge : other._edges)
 			addEdge(find_edge_clone(edge));
 
-		for each (auto face in faceDestination)
+		for (auto face : faceDestination)
 			addFace(face);
 	}
 }
@@ -342,7 +344,7 @@ osgBrep::Brep::compileVertices()
 	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
 
 
-	for each (auto vertex in _vertices)
+	for (auto vertex : _vertices)
 	{
 		auto position = vertex->getPosition();
 		
@@ -377,7 +379,7 @@ osgBrep::Brep::compileEdges()
 	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
 
 
-	for each (auto edge in _edges)
+	for (auto edge : _edges)
 	{
 		auto start = edge->getStart()->getPosition();
 		auto end = edge->getEnd()->getPosition();
@@ -474,7 +476,7 @@ osgBrep::Brep::compileFaces()
 	};
 
 
-	for each (auto face in _faces)
+	for (auto face : _faces)
 	{
 		auto loop = face->getEdgeLoop();
 

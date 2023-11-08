@@ -13,6 +13,8 @@
 
 #include <osgBrep/EdgeLoop>
 
+#include <algorithm>
+
 
 osgBrep::EdgeLoop::EdgeLoop()
 {
@@ -42,7 +44,7 @@ osgBrep::EdgeLoop::EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop) :
 			};
 
 
-			for each (auto edge in other._orientedEdges)
+			for (auto edge : other._orientedEdges)
 			{
 				add_if_not_present(edge->getEdge()->getStart());
 				add_if_not_present(edge->getEdge()->getEnd());
@@ -54,7 +56,7 @@ osgBrep::EdgeLoop::EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop) :
 		_orientedEdges.clear();
 
 
-		for each (auto edge in other._orientedEdges)
+		for (auto edge : other._orientedEdges)
 		{
 			auto clonedEdge = (OrientedEdge*)edge->clone(copyop);
 
@@ -106,7 +108,7 @@ bool osgBrep::EdgeLoop::isLoop() const
 {
 	auto numEdges = _orientedEdges.size();
 
-	for (int i = 0; i < numEdges; i++)
+	for (int i = 0u; i < numEdges; i++)
 	{
 		auto currentOriented = _orientedEdges[i].get();
 		auto nextOriented = _orientedEdges[(i + 1) % numEdges].get();
