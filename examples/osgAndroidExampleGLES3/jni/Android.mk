@@ -17,7 +17,6 @@ endif
 
 LOCAL_C_INCLUDES:= $(OSG_ANDROID_DIR)/include
 LOCAL_CFLAGS    := -Werror -fno-short-enums
-LOCAL_CPPFLAGS  := -DOSG_LIBRARY_STATIC 
 
 LOCAL_LDLIBS    := -llog -lGLESv3 -lz -lgnustl_static -lsupc++
 LOCAL_SRC_FILES := osgNativeLib.cpp OsgMainApp.cpp OsgAndroidNotifyHandler.cpp

@@ -1,7 +1,5 @@
 IF(DYNAMIC_OPENSCENEGRAPH)
     ADD_DEFINITIONS(-DOSGWIDGET_LIBRARY)
-ELSE()
-    ADD_DEFINITIONS(-DOSG_LIBRARY_STATIC)
 ENDIF()
 
 ################################################################################

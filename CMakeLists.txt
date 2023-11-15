@@ -687,6 +687,17 @@ IF(ANDROID)
 ENDIF()
 
 
+# Dynamic vs Static Linking
+OPTION(DYNAMIC_OPENSCENEGRAPH "Set to ON to build OpenSceneGraph for dynamic linking.  Use OFF for static." ON)
+IF   (DYNAMIC_OPENSCENEGRAPH)
+    SET(OPENSCENEGRAPH_USER_DEFINED_DYNAMIC_OR_STATIC "SHARED")
+    SET(OSG_LIBRARY_STATIC OFF)
+ELSE ()
+    SET(OPENSCENEGRAPH_USER_DEFINED_DYNAMIC_OR_STATIC "STATIC")
+    SET(OSG_LIBRARY_STATIC ON)
+ENDIF()
+
+
 ################################################################################
 # Set Config header file
 
@@ -1109,7 +1120,7 @@ ELSEIF(MSVC)
     #C4127 Error Message conditional expression is constant
     #C4706 assignment within conditional expression
     #C4589: Constructor of abstract class 'osgGA::CameraManipulator' ignores initializer for virtual base class 'osg::Object'
-    SET(OSG_AGGRESSIVE_WARNING_FLAGS /W4 /wd4589 /wd4706 /wd4127 /wd4100)
+    SET(OSG_AGGRESSIVE_WARNING_FLAGS /wd4589 /wd4706 /wd4127 /wd4100)
 ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     SET(OSG_AGGRESSIVE_WARNING_FLAGS  -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused -Wno-overloaded-virtual)
 
@@ -1170,15 +1181,6 @@ IF(OSG_AGGRESSIVE_WARNING_FLAGS)
             STRING(REGEX REPLACE "${flag}" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
         ENDFOREACH()
     ENDIF()
-ENDIF()
-
-
-# Dynamic vs Static Linking
-OPTION(DYNAMIC_OPENSCENEGRAPH "Set to ON to build OpenSceneGraph for dynamic linking.  Use OFF for static." ON)
-IF   (DYNAMIC_OPENSCENEGRAPH)
-    SET(OPENSCENEGRAPH_USER_DEFINED_DYNAMIC_OR_STATIC "SHARED")
-ELSE ()
-    SET(OPENSCENEGRAPH_USER_DEFINED_DYNAMIC_OR_STATIC "STATIC")
 ENDIF()
 
 

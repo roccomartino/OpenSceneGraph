@@ -38,5 +38,6 @@
 #cmakedefine OSG_ENVVAR_SUPPORTED
 #cmakedefine OSG_WINDOWING_SYSTEM_CARBON
 #cmakedefine OSG_WINDOWING_SYSTEM_NONE
+#cmakedefine OSG_LIBRARY_STATIC
 
 #endif

@@ -34,9 +34,6 @@ IF(DYNAMIC_OPENSCENEGRAPH)
     ADD_SUBDIRECTORY(osgversion)
     ADD_SUBDIRECTORY(present3D)
 ELSE()
-    # need to define this on win32 or linker cries about _declspecs
-    ADD_DEFINITIONS(-DOSG_LIBRARY_STATIC)
-
     ADD_SUBDIRECTORY(osgversion)
     ADD_SUBDIRECTORY(present3D)
 ENDIF()
