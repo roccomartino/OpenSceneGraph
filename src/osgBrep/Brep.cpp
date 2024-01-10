@@ -528,6 +528,11 @@ void osgBrep::Brep::removeFace(Face* face)
 		_faces.erase(itr);
 }
 
+void osgBrep::Brep::clearFaces()
+{
+	_faces.clear();
+}
+
 
 void osgBrep::Brep::addEdge(Edge* edge)
 {
@@ -542,6 +547,11 @@ void osgBrep::Brep::removeEdge(Edge* edge)
 		_edges.erase(itr);
 }
 
+void osgBrep::Brep::clearEdges()
+{
+	_edges.clear();
+}
+
 
 void osgBrep::Brep::addVertex(Vertex* vertex)
 {
@@ -554,4 +564,9 @@ void osgBrep::Brep::removeVertex(Vertex* vertex)
 
 	if (itr != std::end(_vertices))
 		_vertices.erase(itr);
+}
+
+void osgBrep::Brep::clearVertices()
+{
+	_vertices.clear();
 }

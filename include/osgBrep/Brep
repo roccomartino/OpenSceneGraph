@@ -40,15 +40,21 @@ namespace osgBrep {
 
         void removeFace(Face* face);
 
+        void clearFaces();
+
 
         void addEdge(Edge* edge);
 
         void removeEdge(Edge* edge);
 
+        void clearEdges();
+
 
         void addVertex(Vertex* vertex);
 
         void removeVertex(Vertex* vertex);
+
+        void clearVertices();
 
 
     public:
