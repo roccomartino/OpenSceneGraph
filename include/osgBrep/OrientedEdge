@@ -50,6 +50,9 @@ namespace osgBrep {
         const Vertex* getOrientedStart() const;
         const Vertex* getOrientedEnd() const;
 
+        Vertex* getOrientedStart();
+        Vertex* getOrientedEnd();
+
 
     private:
         osg::ref_ptr<Edge> _edge;

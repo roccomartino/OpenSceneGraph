@@ -42,14 +42,14 @@ namespace osgBrep {
 
         const EdgeLoop* getEdgeLoop() const;
 
-        void setNormal(const osg::Vec3d& normal);
+        void setNormal(const osg::Vec3& normal);
 
         const osg::Vec3& getNormal() const;
 
 
     private:
         osg::ref_ptr<EdgeLoop> _edgeLoop;
-        osg::Vec3d _normal;
+        osg::Vec3 _normal;
     };
 
 }

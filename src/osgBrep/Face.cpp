@@ -50,7 +50,7 @@ const osgBrep::EdgeLoop* osgBrep::Face::getEdgeLoop() const
     return _edgeLoop;
 }
 
-void osgBrep::Face::setNormal(const osg::Vec3d& normal)
+void osgBrep::Face::setNormal(const osg::Vec3& normal)
 {
     _normal = normal;
 }

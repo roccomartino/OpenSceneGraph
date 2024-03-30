@@ -37,13 +37,13 @@ namespace osgBrep {
 
 
     public:
-        void setPosition(const osg::Vec3d& position);
+        void setPosition(const osg::Vec3& position);
 
         const osg::Vec3& getPosition() const;
 
 
     private:
-        osg::Vec3d _position;
+        osg::Vec3 _position;
     };
 
 }

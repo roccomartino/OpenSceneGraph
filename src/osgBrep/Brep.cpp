@@ -437,7 +437,7 @@ osgBrep::Brep::compileFaces()
 		auto edges = face->getEdgeLoop()->getOrientedEdges();
 		auto normal = face->getNormal();
 
-		for (auto& edge : edges)
+		for (const auto& edge : edges)
 		{
 			auto p = edge->getOrientedStart()->getPosition();
 			vertexArray->push_back(p);

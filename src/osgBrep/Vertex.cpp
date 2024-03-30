@@ -31,7 +31,7 @@ osgBrep::Vertex::~Vertex()
 }
 
 
-void osgBrep::Vertex::setPosition(const osg::Vec3d& position)
+void osgBrep::Vertex::setPosition(const osg::Vec3& position)
 {
     _position = position;
 }
