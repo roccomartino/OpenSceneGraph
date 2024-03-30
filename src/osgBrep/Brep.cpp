@@ -17,6 +17,9 @@
 #include <osg/LineWidth>
 #include <osg/PolygonOffset>
 #include <osg/Depth>
+#include <osg/io_utils>
+
+#include <osgUtil/Tessellator>
 
 #include <algorithm>
 
@@ -420,63 +423,7 @@ osgBrep::Brep::compileFaces()
 	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
 
 
-
-	auto compileTriangle = [&vertexArray, &normalArray, &colorArray](Face* face)
-	{
-		auto edges = face->getEdgeLoop()->getOrientedEdges();
-		auto normal = face->getNormal();
-
-		auto p0 = edges[0]->getOrientedStart()->getPosition();
-		auto p1 = edges[1]->getOrientedStart()->getPosition();
-		auto p2 = edges[2]->getOrientedStart()->getPosition();
-
-		vertexArray->push_back(p0);
-		vertexArray->push_back(p1);
-		vertexArray->push_back(p2);
-
-		normalArray->push_back(normal);
-		normalArray->push_back(normal);
-		normalArray->push_back(normal);
-
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-	};
-
-	auto compileQuad = [&vertexArray, &normalArray, &colorArray](Face* face)
-	{
-		auto edges = face->getEdgeLoop()->getOrientedEdges();
-		auto normal = face->getNormal();
-
-		auto p0 = edges[0]->getOrientedStart()->getPosition();
-		auto p1 = edges[1]->getOrientedStart()->getPosition();
-		auto p2 = edges[2]->getOrientedStart()->getPosition();
-		auto p3 = edges[3]->getOrientedStart()->getPosition();
-
-		vertexArray->push_back(p0);
-		vertexArray->push_back(p1);
-		vertexArray->push_back(p2);
-		vertexArray->push_back(p0);
-		vertexArray->push_back(p2);
-		vertexArray->push_back(p3);
-
-		normalArray->push_back(normal);
-		normalArray->push_back(normal);
-		normalArray->push_back(normal);
-		normalArray->push_back(normal);
-		normalArray->push_back(normal);
-		normalArray->push_back(normal);
-
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
-	};
-
-
-	for (auto face : _faces)
+	for (const auto& face : _faces)
 	{
 		auto loop = face->getEdgeLoop();
 
@@ -485,24 +432,31 @@ osgBrep::Brep::compileFaces()
 			continue;
 
 
-		switch (loop->getOrientedEdges().size())
+		auto startingIndex = vertexArray->size();
+
+		auto edges = face->getEdgeLoop()->getOrientedEdges();
+		auto normal = face->getNormal();
+
+		for (auto& edge : edges)
 		{
-		case 3:
-			compileTriangle(face);
-			break;
-
-		case 4:
-			compileQuad(face);
-			break;
-
-		default:
-			break;
+			auto p = edge->getOrientedStart()->getPosition();
+			vertexArray->push_back(p);
+			normalArray->push_back(normal);
+			colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
 		}
+		
+		geometry->addPrimitiveSet(new osg::DrawArrays(GL_POLYGON, startingIndex, vertexArray->size() - startingIndex));
 	}
 
-	geometry->addPrimitiveSet(new osg::DrawArrays(GL_TRIANGLES, 0, vertexArray->size()));
+
 
 	addDrawable(geometry);
+
+	osgUtil::Tessellator tsv;
+	tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_GEOMETRY);
+	tsv.setBoundaryOnly(false);
+	tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_ODD);
+	tsv.retessellatePolygons(*geometry);
 
 
 	auto stateSet = geometry->getOrCreateStateSet();
