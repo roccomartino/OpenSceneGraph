@@ -439,8 +439,7 @@ osgBrep::Brep::compileFaces()
 
 		for (const auto& edge : edges)
 		{
-			auto p = edge->getOrientedStart()->getPosition();
-			vertexArray->push_back(p);
+			vertexArray->push_back(edge->getOrientedStart()->getPosition());
 			normalArray->push_back(normal);
 			colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
 		}
