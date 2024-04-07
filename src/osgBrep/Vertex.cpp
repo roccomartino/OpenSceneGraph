@@ -21,22 +21,12 @@ osgBrep::Vertex::Vertex()
 
 osgBrep::Vertex::Vertex(const Vertex& other, const osg::CopyOp& copyop):
 	osg::Object(other, copyop),
-	_position(other._position)
+	_position(other._position),
+	_selected(other._selected)
 {
 }
 
 
 osgBrep::Vertex::~Vertex()
 {
-}
-
-
-void osgBrep::Vertex::setPosition(const osg::Vec3& position)
-{
-    _position = position;
-}
-
-const osg::Vec3& osgBrep::Vertex::getPosition() const
-{
-    return _position;
 }

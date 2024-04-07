@@ -338,6 +338,9 @@ osgBrep::Brep::compile()
 void
 osgBrep::Brep::compileVertices()
 {
+	const osg::Vec4 selsectedColor(1, 1, 0, 1);
+	const osg::Vec4 regularColor(0, 0, 0, 1);
+
 	auto geometry = new osg::Geometry();
 
 	auto vertexArray = new osg::Vec3Array();
@@ -353,7 +356,7 @@ osgBrep::Brep::compileVertices()
 		
 		vertexArray->push_back(position);
 
-		colorArray->push_back(osg::Vec4(0, 0, 0, 1));
+		colorArray->push_back(vertex->getSelected() ? selsectedColor : regularColor);
 	}
 
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, vertexArray->size()));
@@ -366,6 +369,8 @@ osgBrep::Brep::compileVertices()
 	stateSet->setAttributeAndModes(new osg::Point(6), osg::StateAttribute::ON);
 	
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
 }
 
 
