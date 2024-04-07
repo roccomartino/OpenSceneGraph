@@ -378,6 +378,10 @@ osgBrep::Brep::compileVertices()
 void
 osgBrep::Brep::compileEdges()
 {
+	const osg::Vec4 selsectedColor(1, 1, 0, 1);
+	const osg::Vec4 regularColor(0, 0, 0, 1);
+
+
 	auto geometry = new osg::Geometry();
 
 	auto vertexArray = new osg::Vec3Array();
@@ -396,8 +400,16 @@ osgBrep::Brep::compileEdges()
 		vertexArray->push_back(start);
 		vertexArray->push_back(end);
 
-		colorArray->push_back(osg::Vec4(0, 0, 0, 1));
-		colorArray->push_back(osg::Vec4(0, 0, 0, 1));
+		if (edge->getSelected())
+		{
+			colorArray->push_back(selsectedColor);
+			colorArray->push_back(selsectedColor);
+		}
+		else
+		{
+			colorArray->push_back(regularColor);
+			colorArray->push_back(regularColor);
+		}
 	}
 
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES, 0, vertexArray->size()));
@@ -410,6 +422,8 @@ osgBrep::Brep::compileEdges()
 	stateSet->setAttributeAndModes(new osg::LineWidth(2), osg::StateAttribute::ON);
 
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
 }
 
 
@@ -469,6 +483,8 @@ osgBrep::Brep::compileFaces()
 
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 	stateSet->setMode(GL_POLYGON_OFFSET_FILL, osg::StateAttribute::ON);
+
+	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(0, 1, 0, 0));
 }
 
 
