@@ -55,10 +55,43 @@ namespace osgBrep {
         void compile();
 
 
+    public:
+        inline void setShowVertices(bool show)
+        {
+            if (show != _showVertices)
+            {
+                _showVertices = show;
+                showVerticesChanged();
+            }
+        }
+
+        inline bool getShowVertices() const
+        {
+            return _showVertices;
+        }
+
+        inline void setShowEdges(bool show)
+        {
+            if (show != _showEdges)
+            {
+                _showEdges = show;
+                showEdgesChanged();
+            }
+        }
+
+        inline bool getShowEdges() const
+        {
+            return _showEdges;
+        }
+
+
     private:
         void compileVertices();
         void compileEdges();
         void compileFaces();
+
+        void showVerticesChanged();
+        void showEdgesChanged();
 
 
     private:
@@ -69,6 +102,9 @@ namespace osgBrep {
         osg::ref_ptr<osg::Geometry> _vertexGeometry;
         osg::ref_ptr<osg::Geometry> _edgeGeometry;
         osg::ref_ptr<osg::Geometry> _faceGeometry;
+
+        bool _showVertices{ true };
+        bool _showEdges{ true };
     };
 
 }

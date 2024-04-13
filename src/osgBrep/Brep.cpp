@@ -340,7 +340,8 @@ osgBrep::Brep::compileVertices()
 	{
 		_vertexGeometry = new osg::Geometry();
 
-		addDrawable(_vertexGeometry);
+		if(_showVertices)
+			addDrawable(_vertexGeometry);
 
 
 		auto stateSet = _vertexGeometry->getOrCreateStateSet();
@@ -388,7 +389,8 @@ osgBrep::Brep::compileEdges()
 	{
 		_edgeGeometry = new osg::Geometry();
 
-		addDrawable(_edgeGeometry);
+		if(_showEdges)
+			addDrawable(_edgeGeometry);
 
 
 		auto stateSet = _edgeGeometry->getOrCreateStateSet();
@@ -567,4 +569,30 @@ void osgBrep::Brep::removeVertex(Vertex* vertex)
 void osgBrep::Brep::clearVertices()
 {
 	_vertices.clear();
+}
+
+
+
+
+void osgBrep::Brep::showVerticesChanged()
+{
+	if (_vertexGeometry.valid())
+	{
+		if (_showVertices)
+			addDrawable(_vertexGeometry);
+		else
+			removeDrawable(_vertexGeometry);
+	}
+}
+
+
+void osgBrep::Brep::showEdgesChanged()
+{
+	if (_edgeGeometry.valid())
+	{
+		if (_showEdges)
+			addDrawable(_edgeGeometry);
+		else
+			removeDrawable(_edgeGeometry);
+	}
 }
