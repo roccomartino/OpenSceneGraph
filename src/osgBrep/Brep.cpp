@@ -327,8 +327,6 @@ osgBrep::Brep::~Brep()
 void
 osgBrep::Brep::compile()
 {
-	removeDrawables(0, getNumDrawables());
-
 	compileFaces();
 	compileEdges();
 	compileVertices();
@@ -338,10 +336,28 @@ osgBrep::Brep::compile()
 void
 osgBrep::Brep::compileVertices()
 {
+	if (!_vertexGeometry.valid())
+	{
+		_vertexGeometry = new osg::Geometry();
+
+		addDrawable(_vertexGeometry);
+
+
+		auto stateSet = _vertexGeometry->getOrCreateStateSet();
+
+		stateSet->setAttributeAndModes(new osg::Point(6), osg::StateAttribute::ON);
+
+		stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+		stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
+	}
+
+	auto geometry = _vertexGeometry.get();
+
+
+
 	const osg::Vec4 selsectedColor(1, 1, 0, 1);
 	const osg::Vec4 regularColor(0, 0, 0, 1);
-
-	auto geometry = new osg::Geometry();
 
 	auto vertexArray = new osg::Vec3Array();
 	auto colorArray = new osg::Vec4Array();
@@ -355,22 +371,12 @@ osgBrep::Brep::compileVertices()
 		auto position = vertex->getPosition();
 		
 		vertexArray->push_back(position);
-
 		colorArray->push_back(vertex->getSelected() ? selsectedColor : regularColor);
 	}
 
+
+	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, vertexArray->size()));
-
-	addDrawable(geometry);
-
-
-	auto stateSet = geometry->getOrCreateStateSet();
-
-	stateSet->setAttributeAndModes(new osg::Point(6), osg::StateAttribute::ON);
-	
-	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-
-	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
 }
 
 
@@ -378,11 +384,29 @@ osgBrep::Brep::compileVertices()
 void
 osgBrep::Brep::compileEdges()
 {
+	if (!_edgeGeometry.valid())
+	{
+		_edgeGeometry = new osg::Geometry();
+
+		addDrawable(_edgeGeometry);
+
+
+		auto stateSet = _edgeGeometry->getOrCreateStateSet();
+
+		stateSet->setAttributeAndModes(new osg::LineWidth(2), osg::StateAttribute::ON);
+
+		stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+		stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
+	}
+
+	auto geometry = _edgeGeometry.get();
+
+
+
 	const osg::Vec4 selsectedColor(1, 1, 0, 1);
 	const osg::Vec4 regularColor(0, 0, 0, 1);
 
-
-	auto geometry = new osg::Geometry();
 
 	auto vertexArray = new osg::Vec3Array();
 	auto colorArray = new osg::Vec4Array();
@@ -412,18 +436,8 @@ osgBrep::Brep::compileEdges()
 		}
 	}
 
+	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES, 0, vertexArray->size()));
-
-	addDrawable(geometry);
-
-
-	auto stateSet = geometry->getOrCreateStateSet();
-
-	stateSet->setAttributeAndModes(new osg::LineWidth(2), osg::StateAttribute::ON);
-
-	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-
-	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
 }
 
 
@@ -431,7 +445,25 @@ osgBrep::Brep::compileEdges()
 void
 osgBrep::Brep::compileFaces()
 {
-	auto geometry = new osg::Geometry();
+	if (!_faceGeometry.valid())
+	{
+		_faceGeometry = new osg::Geometry();
+
+		addDrawable(_faceGeometry);
+
+
+		auto stateSet = _faceGeometry->getOrCreateStateSet();
+
+		stateSet->setAttributeAndModes(new osg::PolygonOffset(1, 1), osg::StateAttribute::ON);
+
+		stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+		stateSet->setMode(GL_POLYGON_OFFSET_FILL, osg::StateAttribute::ON);
+
+		stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(0, 1, 0, 0));
+	}
+
+	auto geometry = _faceGeometry.get();
+
 
 	auto vertexArray = new osg::Vec3Array();
 	auto normalArray = new osg::Vec3Array();
@@ -441,6 +473,8 @@ osgBrep::Brep::compileFaces()
 	geometry->setNormalArray(normalArray, osg::Array::BIND_PER_VERTEX);
 	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
 
+
+	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 
 	for (const auto& face : _faces)
 	{
@@ -468,23 +502,13 @@ osgBrep::Brep::compileFaces()
 
 
 
-	addDrawable(geometry);
-
 	osgUtil::Tessellator tsv;
+
 	tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_GEOMETRY);
 	tsv.setBoundaryOnly(false);
 	tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_ODD);
+
 	tsv.retessellatePolygons(*geometry);
-
-
-	auto stateSet = geometry->getOrCreateStateSet();
-
-	stateSet->setAttributeAndModes(new osg::PolygonOffset(1, 1), osg::StateAttribute::ON);
-
-	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-	stateSet->setMode(GL_POLYGON_OFFSET_FILL, osg::StateAttribute::ON);
-
-	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(0, 1, 0, 0));
 }
 
 

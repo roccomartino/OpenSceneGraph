@@ -36,25 +36,19 @@ namespace osgBrep {
 
 
     public:
+        void addVertex(Vertex* vertex);
+        void addEdge(Edge* edge);
         void addFace(Face* face);
 
-        void removeFace(Face* face);
-
-        void clearFaces();
-
-
-        void addEdge(Edge* edge);
-
-        void removeEdge(Edge* edge);
-
-        void clearEdges();
-
-
-        void addVertex(Vertex* vertex);
 
         void removeVertex(Vertex* vertex);
+        void removeEdge(Edge* edge);
+        void removeFace(Face* face);
+
 
         void clearVertices();
+        void clearEdges();
+        void clearFaces();
 
 
     public:
@@ -71,6 +65,10 @@ namespace osgBrep {
         std::vector<osg::ref_ptr<Face>> _faces;
         std::vector<osg::ref_ptr<Edge>> _edges;
         std::vector<osg::ref_ptr<Vertex>> _vertices;
+
+        osg::ref_ptr<osg::Geometry> _vertexGeometry;
+        osg::ref_ptr<osg::Geometry> _edgeGeometry;
+        osg::ref_ptr<osg::Geometry> _faceGeometry;
     };
 
 }
