@@ -506,9 +506,9 @@ osgBrep::Brep::compileFaces()
 
 	osgUtil::Tessellator tsv;
 
-	tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_GEOMETRY);
+	tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_POLYGONS);
 	tsv.setBoundaryOnly(false);
-	tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_ODD);
+	tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_NONZERO);
 
 	tsv.retessellatePolygons(*geometry);
 }
