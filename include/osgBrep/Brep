@@ -17,6 +17,11 @@
 
 #include <osgBrep/Face>
 
+#include <osg/Geometry>
+#include <osg/Point>
+#include <osg/LineWidth>
+#include <osg/PolygonOffset>
+
 
 namespace osgBrep {
 
@@ -83,6 +88,39 @@ namespace osgBrep {
         {
             return _showEdges;
         }
+        
+        inline void setVertexSize(float value)
+        {
+            _vertexSize = value;
+            _vertexGeometry->getStateSet()->setAttributeAndModes(new osg::Point(_vertexSize));
+        }
+
+        inline float getVertexSize() const
+        {
+            return _vertexSize;
+        }
+
+        inline void setEdgeWidth(float value)
+        {
+            _edgeWidth = value;
+            _edgeGeometry->getStateSet()->setAttributeAndModes(new osg::LineWidth(_edgeWidth));
+        }
+
+        inline float getEdgeWidth() const
+        {
+            return _edgeWidth;
+        }
+
+        inline void setFaceOffset(float value)
+        {
+            _faceOffset = value;
+            _faceGeometry->getStateSet()->setAttributeAndModes(new osg::PolygonOffset(_faceOffset, 0));
+        }
+
+        inline float getFaceOffset() const
+        {
+            return _faceOffset;
+        }
 
 
     private:
@@ -109,6 +147,10 @@ namespace osgBrep {
 
         bool _showVertices{ true };
         bool _showEdges{ true };
+
+        float _vertexSize{ 6 };
+        float _edgeWidth{ 2 };
+        float _faceOffset{ 1 };
     };
 
 }

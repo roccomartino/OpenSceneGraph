@@ -12,12 +12,6 @@
 */
 
 #include <osgBrep/Brep>
-#include <osg/Geometry>
-#include <osg/Point>
-#include <osg/LineWidth>
-#include <osg/PolygonOffset>
-#include <osg/Depth>
-#include <osg/io_utils>
 
 #include <osgUtil/Tessellator>
 
@@ -478,7 +472,7 @@ void osgBrep::Brep::createVertexGeometry()
 
 	auto stateSet = _vertexGeometry->getOrCreateStateSet();
 
-	stateSet->setAttributeAndModes(new osg::Point(6), osg::StateAttribute::ON);
+	stateSet->setAttributeAndModes(new osg::Point(_vertexSize), osg::StateAttribute::ON);
 
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
@@ -496,7 +490,7 @@ void osgBrep::Brep::createEdgeGeometry()
 
 	auto stateSet = _edgeGeometry->getOrCreateStateSet();
 
-	stateSet->setAttributeAndModes(new osg::LineWidth(2), osg::StateAttribute::ON);
+	stateSet->setAttributeAndModes(new osg::LineWidth(_edgeWidth), osg::StateAttribute::ON);
 
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
@@ -512,7 +506,7 @@ void osgBrep::Brep::createFaceGeometry()
 
 	auto stateSet = _faceGeometry->getOrCreateStateSet();
 
-	stateSet->setAttributeAndModes(new osg::PolygonOffset(1, 1), osg::StateAttribute::ON);
+	stateSet->setAttributeAndModes(new osg::PolygonOffset(_faceOffset, 0), osg::StateAttribute::ON);
 
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 	stateSet->setMode(GL_POLYGON_OFFSET_FILL, osg::StateAttribute::ON);
