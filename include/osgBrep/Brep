@@ -90,6 +90,10 @@ namespace osgBrep {
         void compileEdges();
         void compileFaces();
 
+        void createVertexGeometry();
+        void createEdgeGeometry();
+        void createFaceGeometry();
+
         void showVerticesChanged();
         void showEdgesChanged();
 
