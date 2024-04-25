@@ -421,8 +421,13 @@ osgBrep::Brep::compileFaces()
 
 	geometry->setVertexArray(vertexArray);
 	geometry->setNormalArray(normalArray, osg::Array::BIND_PER_VERTEX);
-	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
 
+	geometry->setColorArray(colorArray, osg::Array::BIND_OVERALL);
+	colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+
+
+	auto triangleVertexArray = new osg::Vec3Array();
+	auto triangleNormalArray = new osg::Vec3Array();
 
 	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 
@@ -434,20 +439,57 @@ osgBrep::Brep::compileFaces()
 		if (!loop->isLoop())
 			continue;
 
-
 		auto startingIndex = vertexArray->size();
 
 		auto edges = face->getEdgeLoop()->getOrientedEdges();
 		auto normal = face->getNormal();
 
-		for (const auto& edge : edges)
+		if (edges.size() == 3)
 		{
-			vertexArray->push_back(edge->getOrientedStart()->getPosition());
-			normalArray->push_back(normal);
-			colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
+			triangleVertexArray->push_back(edges[0]->getOrientedStart()->getPosition());
+			triangleVertexArray->push_back(edges[1]->getOrientedStart()->getPosition());
+			triangleVertexArray->push_back(edges[2]->getOrientedStart()->getPosition());
+			triangleNormalArray->push_back(normal);
+			triangleNormalArray->push_back(normal);
+			triangleNormalArray->push_back(normal);
+		}
+
+		else if (edges.size() == 4)
+		{
+			triangleVertexArray->push_back(edges[0]->getOrientedStart()->getPosition());
+			triangleVertexArray->push_back(edges[1]->getOrientedStart()->getPosition());
+			triangleVertexArray->push_back(edges[2]->getOrientedStart()->getPosition());
+			triangleNormalArray->push_back(normal);
+			triangleNormalArray->push_back(normal);
+			triangleNormalArray->push_back(normal);
+			triangleVertexArray->push_back(edges[0]->getOrientedStart()->getPosition());
+			triangleVertexArray->push_back(edges[2]->getOrientedStart()->getPosition());
+			triangleVertexArray->push_back(edges[3]->getOrientedStart()->getPosition());
+			triangleNormalArray->push_back(normal);
+			triangleNormalArray->push_back(normal);
+			triangleNormalArray->push_back(normal);
+		}
+
+		else
+		{
+			for (const auto& edge : edges)
+			{
+				vertexArray->push_back(edge->getOrientedStart()->getPosition());
+				normalArray->push_back(normal);
+			}
 		}
 		
 		geometry->addPrimitiveSet(new osg::DrawArrays(GL_POLYGON, startingIndex, vertexArray->size() - startingIndex));
+	}
+
+	if (!triangleVertexArray->empty())
+	{
+		auto firstTriangleIndex = vertexArray->size();
+
+		vertexArray->insert(vertexArray->end(), triangleVertexArray->begin(), triangleVertexArray->end());
+		normalArray->insert(normalArray->end(), triangleNormalArray->begin(), triangleNormalArray->end());
+
+		geometry->addPrimitiveSet(new osg::DrawArrays(GL_TRIANGLES, firstTriangleIndex, triangleVertexArray->size()));
 	}
 
 
