@@ -59,6 +59,10 @@ namespace osgBrep {
     public:
         void compile();
 
+        void compileVertices();
+        void compileEdges();
+        void compileFaces();
+
 
     public:
         inline void setShowVertices(bool show)
@@ -124,10 +128,6 @@ namespace osgBrep {
 
 
     private:
-        void compileVertices();
-        void compileEdges();
-        void compileFaces();
-
         void createVertexGeometry();
         void createEdgeGeometry();
         void createFaceGeometry();

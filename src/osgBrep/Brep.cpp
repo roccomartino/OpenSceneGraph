@@ -466,9 +466,9 @@ osgBrep::Brep::compileFaces()
 				vertexArray->push_back(edge->getOrientedStart()->getPosition());
 				normalArray->push_back(normal);
 			}
+
+			geometry->addPrimitiveSet(new osg::DrawArrays(GL_POLYGON, startingIndex, vertexArray->size() - startingIndex));
 		}
-		
-		geometry->addPrimitiveSet(new osg::DrawArrays(GL_POLYGON, startingIndex, vertexArray->size() - startingIndex));
 	}
 
 	if (!triangleVertexArray->empty())
