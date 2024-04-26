@@ -45,15 +45,10 @@ namespace osgBrep {
         inline Vertex* getEnd() { return _end; }
         inline const Vertex* getEnd() const { return _end; }
 
-        inline void setSelected(bool selected) { _selected = selected; }
-        inline bool getSelected() const { return _selected; }
-
 
     private:
         osg::ref_ptr<Vertex> _start;
         osg::ref_ptr<Vertex> _end;
-
-        bool _selected{ false };
     };
 
 }

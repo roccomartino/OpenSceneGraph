@@ -340,10 +340,6 @@ osgBrep::Brep::compileVertices()
 	auto geometry = _vertexGeometry.get();
 
 
-
-	const osg::Vec4 selsectedColor(1, 1, 0, 1);
-	const osg::Vec4 regularColor(0, 0, 0, 1);
-
 	auto vertexArray = new osg::Vec3Array();
 	auto colorArray = new osg::Vec4Array();
 
@@ -356,7 +352,7 @@ osgBrep::Brep::compileVertices()
 		auto position = vertex->getPosition();
 		
 		vertexArray->push_back(position);
-		colorArray->push_back(vertex->getSelected() ? selsectedColor : regularColor);
+		colorArray->push_back(vertex->getColor());
 	}
 
 
@@ -385,23 +381,16 @@ osgBrep::Brep::compileEdges()
 
 	for (auto edge : _edges)
 	{
-		auto start = edge->getStart()->getPosition();
-		auto end = edge->getEnd()->getPosition();
+		auto start = edge->getStart();
+		auto end = edge->getEnd();
 ;
 
-		vertexArray->push_back(start);
-		vertexArray->push_back(end);
+		vertexArray->push_back(start->getPosition());
+		vertexArray->push_back(end->getPosition());
 
-		if (edge->getSelected())
-		{
-			colorArray->push_back(selsectedColor);
-			colorArray->push_back(selsectedColor);
-		}
-		else
-		{
-			colorArray->push_back(regularColor);
-			colorArray->push_back(regularColor);
-		}
+		colorArray->push_back(start->getColor());
+		colorArray->push_back(end->getColor());
+
 	}
 
 	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());

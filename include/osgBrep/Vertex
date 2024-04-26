@@ -40,14 +40,14 @@ namespace osgBrep {
         inline void setPosition(const osg::Vec3& position) { _position = position; }
         inline const osg::Vec3& getPosition() const { return _position; }
 
-        inline void setSelected(bool selected) { _selected = selected; }
-        inline bool getSelected() const { return _selected; }
+        inline void setColor(const osg::Vec4& value) { _color = value; }
+        inline const osg::Vec4& getColor() const { return _color; }
 
 
     private:
         osg::Vec3 _position;
 
-        bool _selected{ false };
+        osg::Vec4 _color{ osg::Vec4(0, 0, 0, 1) };
     };
 
 }

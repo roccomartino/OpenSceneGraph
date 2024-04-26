@@ -22,7 +22,7 @@ osgBrep::Vertex::Vertex()
 osgBrep::Vertex::Vertex(const Vertex& other, const osg::CopyOp& copyop):
 	osg::Object(other, copyop),
 	_position(other._position),
-	_selected(other._selected)
+	_color(other._color)
 {
 }
 

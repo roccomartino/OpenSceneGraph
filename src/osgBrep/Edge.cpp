@@ -22,8 +22,7 @@ osgBrep::Edge::Edge()
 osgBrep::Edge::Edge(const Edge& other, const osg::CopyOp& copyop) :
 	osg::Object(other, copyop),
 	_start(other._start),
-	_end(other._end),
-	_selected(other._selected)
+	_end(other._end)
 {
 	if (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS)
 	{
