@@ -497,6 +497,10 @@ void osgBrep::Brep::createVertexGeometry()
 {
 	_vertexGeometry = new osg::Geometry();
 
+	_vertexGeometry->setUseDisplayList(_useDisplayListForVertices);
+	_vertexGeometry->setUseVertexBufferObjects(_useVertexBufferObjectForVertices);
+	_vertexGeometry->setUseVertexArrayObject(_useVertexArrayObjectForVertices);
+
 	if (_showVertices)
 		addDrawable(_vertexGeometry);
 
@@ -515,6 +519,10 @@ void osgBrep::Brep::createEdgeGeometry()
 {
 	_edgeGeometry = new osg::Geometry();
 
+	_edgeGeometry->setUseDisplayList(_useDisplayListForEdges);
+	_edgeGeometry->setUseVertexBufferObjects(_useVertexBufferObjectForEdges);
+	_edgeGeometry->setUseVertexArrayObject(_useVertexArrayObjectForEdges);
+
 	if (_showEdges)
 		addDrawable(_edgeGeometry);
 
@@ -532,6 +540,10 @@ void osgBrep::Brep::createEdgeGeometry()
 void osgBrep::Brep::createFaceGeometry()
 {
 	_faceGeometry = new osg::Geometry();
+
+	_faceGeometry->setUseDisplayList(_useDisplayListForFaces);
+	_faceGeometry->setUseVertexBufferObjects(_useVertexBufferObjectForFaces);
+	_faceGeometry->setUseVertexArrayObject(_useVertexArrayObjectForFaces);
 
 	addDrawable(_faceGeometry);
 

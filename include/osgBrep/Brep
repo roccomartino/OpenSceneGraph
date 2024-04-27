@@ -126,6 +126,114 @@ namespace osgBrep {
             return _faceOffset;
         }
 
+        inline void setUseDisplayListForVertices(bool value)
+        {
+            _useDisplayListForVertices = value;
+            if (_vertexGeometry.valid())
+                _vertexGeometry->setUseDisplayList(value);
+        }
+
+        inline bool getUseDisplayListForVertices() const
+        {
+            return _useDisplayListForVertices;
+        }
+
+        inline void setUseVertexBufferObjectForVertices(bool value)
+        {
+            _useVertexBufferObjectForVertices = value;
+            if (_vertexGeometry.valid())
+                _vertexGeometry->setUseVertexBufferObjects(value);
+        }
+
+        inline bool getUseVertexBufferObjectForVertices() const
+        {
+            return _useVertexBufferObjectForVertices;
+        }
+
+        inline void setUseVertexArrayObjectForVertices(bool value)
+        {
+            _useVertexArrayObjectForVertices = value;
+            if (_vertexGeometry.valid())
+                _vertexGeometry->setUseVertexArrayObject(value);
+        }
+
+        inline bool getUseVertexArrayObjectForVertices() const
+        {
+            return _useVertexArrayObjectForVertices;
+        }
+
+        inline void setUseDisplayListForEdges(bool value)
+        {
+            _useDisplayListForEdges = value;
+            if (_edgeGeometry.valid())
+                _edgeGeometry->setUseDisplayList(value);
+        }
+
+        inline bool getUseDisplayListForEdges() const
+        {
+            return _useDisplayListForEdges;
+        }
+
+        inline void setUseVertexBufferObjectForEdges(bool value)
+        {
+            _useVertexBufferObjectForEdges = value;
+            if (_edgeGeometry.valid())
+                _edgeGeometry->setUseVertexBufferObjects(value);
+        }
+
+        inline bool getUseVertexBufferObjectForEdges() const
+        {
+            return _useVertexBufferObjectForEdges;
+        }
+
+        inline void setUseVertexArrayObjectForEdges(bool value)
+        {
+            _useVertexArrayObjectForEdges = value;
+            if (_edgeGeometry.valid())
+                _edgeGeometry->setUseVertexArrayObject(value);
+        }
+
+        inline bool getUseVertexArrayObjectForEdges() const
+        {
+            return _useVertexArrayObjectForEdges;
+        }
+
+        inline void setUseDisplayListForFaces(bool value)
+        {
+            _useDisplayListForFaces = value;
+            if (_faceGeometry.valid())
+                _faceGeometry->setUseDisplayList(value);
+        }
+
+        inline bool getUseDisplayListForFaces() const
+        {
+            return _useDisplayListForFaces;
+        }
+
+        inline void setUseVertexBufferObjectForFaces(bool value)
+        {
+            _useVertexBufferObjectForFaces = value;
+            if (_faceGeometry.valid())
+                _faceGeometry->setUseVertexBufferObjects(value);
+        }
+
+        inline bool getUseVertexBufferObjectForFaces() const
+        {
+            return _useVertexBufferObjectForFaces;
+        }
+
+        inline void setUseVertexArrayObjectForFaces(bool value)
+        {
+            _useVertexArrayObjectForFaces = value;
+            if (_faceGeometry.valid())
+                _faceGeometry->setUseVertexArrayObject(value);
+        }
+
+        inline bool getUseVertexArrayObjectForFaces() const
+        {
+            return _useVertexArrayObjectForFaces;
+        }
+
 
     private:
         void createVertexGeometry();
@@ -147,6 +255,18 @@ namespace osgBrep {
 
         bool _showVertices{ true };
         bool _showEdges{ true };
+
+        bool _useDisplayListForVertices{ true };
+        bool _useDisplayListForEdges{ true };
+        bool _useDisplayListForFaces{ true };
+
+        bool _useVertexBufferObjectForVertices{ false };
+        bool _useVertexBufferObjectForEdges{ false };
+        bool _useVertexBufferObjectForFaces{ false };
+
+        bool _useVertexArrayObjectForVertices{ false };
+        bool _useVertexArrayObjectForEdges{ false };
+        bool _useVertexArrayObjectForFaces{ false };
 
         float _vertexSize{ 6 };
         float _edgeWidth{ 2 };
