@@ -94,6 +94,7 @@ class ValueObject : public Object
             virtual void apply(unsigned int /*in_value*/) {}
             virtual void apply(float /*in_value*/) {}
             virtual void apply(double /*in_value*/) {}
+            virtual void apply(size_t /*in_value*/) {}
             virtual void apply(const std::string& /*in_value*/) {}
 
             virtual void apply(const osg::Vec2b& /*in_value*/) {}
@@ -152,6 +153,7 @@ class ValueObject : public Object
             virtual void apply(unsigned int& /*in_value*/) {}
             virtual void apply(float& /*in_value*/) {}
             virtual void apply(double& /*in_value*/) {}
+            virtual void apply(size_t& /*in_value*/) {}
             virtual void apply(std::string& /*in_value*/) {}
 
             virtual void apply(osg::Vec2b& /*in_value*/) {}
@@ -228,6 +230,7 @@ public:
     virtual void apply(unsigned int in_value) { value = in_value; set = true; }
     virtual void apply(float in_value) { value = in_value; set = true; }
     virtual void apply(double in_value) { value = in_value; set = true; }
+    virtual void apply(size_t in_value) { value = in_value; set = true; }
 };
 template<>
 class GetScalarValue <bool> : public ValueObject::GetValueVisitor
@@ -248,6 +251,7 @@ public:
     virtual void apply(unsigned int in_value) { value = in_value != 0; set = true; }
     virtual void apply(float in_value) { value = in_value != 0.0f; set = true; }
     virtual void apply(double in_value) { value = in_value != 0.0; set = true; }
+    virtual void apply(size_t in_value) { value = in_value != 0.0; set = true; }
 };
 
 template<typename T>
@@ -268,7 +272,8 @@ public:
     virtual void apply(int& in_value) { in_value=value; set = true;}
     virtual void apply(unsigned int& in_value) { in_value=value; set = true;}
     virtual void apply(float& in_value) { in_value=value; set = true;}
-    virtual void apply(double& in_value) { in_value=value; set = true;}
+    virtual void apply(double& in_value) { in_value = value; set = true; }
+    virtual void apply(size_t& in_value) { in_value = value; set = true; }
 };
 
 template< typename T >
@@ -333,6 +338,7 @@ META_ValueObject(int, IntValueObject)
 META_ValueObject(unsigned int, UIntValueObject)
 META_ValueObject(float, FloatValueObject)
 META_ValueObject(double, DoubleValueObject)
+META_ValueObject(size_t, SizeTValueObject)
 META_ValueObject(Vec2f, Vec2fValueObject)
 META_ValueObject(Vec3f, Vec3fValueObject)
 META_ValueObject(Vec4f, Vec4fValueObject)
