@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,18 +11,18 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include <osgBrep/Version>
+#include <osgEditable/Version>
 #include <osg/Version>
 
 extern "C" {
 
-const char* osgBrepGetVersion()
+const char* osgEditableGetVersion()
 {
     return osgGetVersion();
 }
 
 
-const char* osgBrepGetLibraryName()
+const char* osgEditableGetLibraryName()
 {
     return "OpenSceneGraph BRep Library";
 }

@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -12,21 +12,21 @@
 */
 //osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
-#ifndef OSGBREP_EXPORT_
-#define OSGBREP_EXPORT_ 1
+#ifndef OSGEDITABLE_EXPORT_
+#define OSGEDITABLE_EXPORT_ 1
 
 #include <osg/Config>
 
 #if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__) || defined( __MWERKS__)
     #  if defined( OSG_LIBRARY_STATIC )
-    #    define OSGBREP_EXPORT
-    #  elif defined( OSGBREP_LIBRARY )
-    #    define OSGBREP_EXPORT   __declspec(dllexport)
+    #    define OSGEDITABLE_EXPORT
+    #  elif defined( OSGEDITABLE_LIBRARY )
+    #    define OSGEDITABLE_EXPORT   __declspec(dllexport)
     #  else
-    #    define OSGBREP_EXPORT   __declspec(dllimport)
+    #    define OSGEDITABLE_EXPORT   __declspec(dllimport)
     #  endif
 #else
-    #  define OSGBREP_EXPORT
+    #  define OSGEDITABLE_EXPORT
 #endif
 
 
@@ -34,7 +34,7 @@
 
 \namespace osgManipulator
 
-The osgBrep library is a NodeKit that extends the core scene graph to support BRep.
+The osgEditable library is a NodeKit that extends the core scene graph to support BRep.
 */
 
 #endif

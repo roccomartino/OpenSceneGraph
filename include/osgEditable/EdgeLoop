@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,21 +11,21 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGBREP_EDGELOOP
-#define OSGBREP_EDGELOOP
+#ifndef OSGEDITABLE_EDGELOOP
+#define OSGEDITABLE_EDGELOOP
 
 
-#include <osgBrep/OrientedEdge>
+#include <osgEditable/OrientedEdge>
 
 
-namespace osgBrep {
+namespace osgEditable {
 
 
-    class OSGBREP_EXPORT EdgeLoop : public osg::Object
+    class OSGEDITABLE_EXPORT EdgeLoop : public osg::Object
     {
     public:
 
-        META_Object(osgBrep, EdgeLoop);
+        META_Object(osgEditable, EdgeLoop);
 
         EdgeLoop();
         EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);

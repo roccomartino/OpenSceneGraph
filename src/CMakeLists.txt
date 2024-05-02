@@ -28,7 +28,7 @@ FOREACH( mylibfolder
         osgPresentation
         osgWrappers/serializers
         osgPlugins
-        osgBrep
+        osgEditable
     )
 
     ADD_SUBDIRECTORY(${mylibfolder})

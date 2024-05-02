@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,16 +11,16 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include <osgBrep/Face>
+#include <osgEditable/Face>
 
 
-osgBrep::Face::Face():
+osgEditable::Face::Face():
 	_normal(osg::Z_AXIS)
 {
 }
 
 
-osgBrep::Face::Face(const Face& other, const osg::CopyOp& copyop) :
+osgEditable::Face::Face(const Face& other, const osg::CopyOp& copyop) :
 	osg::Object(other, copyop),
 	_edgeLoop(other._edgeLoop),
 	_normal(other._normal)
@@ -30,32 +30,32 @@ osgBrep::Face::Face(const Face& other, const osg::CopyOp& copyop) :
 }
 
 
-osgBrep::Face::~Face()
+osgEditable::Face::~Face()
 {
 }
 
 
-void osgBrep::Face::setEdgeLoop(EdgeLoop* edgeLoop)
+void osgEditable::Face::setEdgeLoop(EdgeLoop* edgeLoop)
 {
     _edgeLoop = edgeLoop;
 }
 
-osgBrep::EdgeLoop* osgBrep::Face::getEdgeLoop()
+osgEditable::EdgeLoop* osgEditable::Face::getEdgeLoop()
 {
     return _edgeLoop;
 }
 
-const osgBrep::EdgeLoop* osgBrep::Face::getEdgeLoop() const
+const osgEditable::EdgeLoop* osgEditable::Face::getEdgeLoop() const
 {
     return _edgeLoop;
 }
 
-void osgBrep::Face::setNormal(const osg::Vec3& normal)
+void osgEditable::Face::setNormal(const osg::Vec3& normal)
 {
     _normal = normal;
 }
 
-const osg::Vec3& osgBrep::Face::getNormal() const
+const osg::Vec3& osgEditable::Face::getNormal() const
 {
     return _normal;
 }

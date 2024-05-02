@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,19 +11,22 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGBREP_VERSION
-#define OSGBREP_VERSION 1
-
-#include <osgBrep/Export>
+#include <osgEditable/Vertex>
 
 
-extern "C" {
-
-extern OSGBREP_EXPORT const char* osgBrepGetVersion();
-
-extern OSGBREP_EXPORT const char* osgBrepGetLibraryName();
-
+osgEditable::Vertex::Vertex()
+{
 }
 
-#endif
 
+osgEditable::Vertex::Vertex(const Vertex& other, const osg::CopyOp& copyop):
+	osg::Object(other, copyop),
+	_position(other._position),
+	_color(other._color)
+{
+}
+
+
+osgEditable::Vertex::~Vertex()
+{
+}

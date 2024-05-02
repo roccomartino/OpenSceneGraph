@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,15 +11,15 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include <osgBrep/Edge>
+#include <osgEditable/Edge>
 
 
-osgBrep::Edge::Edge()
+osgEditable::Edge::Edge()
 {
 }
 
 
-osgBrep::Edge::Edge(const Edge& other, const osg::CopyOp& copyop) :
+osgEditable::Edge::Edge(const Edge& other, const osg::CopyOp& copyop) :
 	osg::Object(other, copyop),
 	_start(other._start),
 	_end(other._end)
@@ -32,6 +32,6 @@ osgBrep::Edge::Edge(const Edge& other, const osg::CopyOp& copyop) :
 }
 
 
-osgBrep::Edge::~Edge()
+osgEditable::Edge::~Edge()
 {
 }

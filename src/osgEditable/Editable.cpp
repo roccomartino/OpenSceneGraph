@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,14 +11,14 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include <osgBrep/Brep>
+#include <osgEditable/Editable>
 
 #include <osgUtil/Tessellator>
 
 #include <algorithm>
 
 
-osgBrep::Brep::Brep()
+osgEditable::Editable::Editable()
 {
 	createVertexGeometry();
 	createEdgeGeometry();
@@ -26,7 +26,7 @@ osgBrep::Brep::Brep()
 }
 
 
-osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
+osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop) :
 	osg::Geode(other, copyop),
 	_faces(other._faces)
 {
@@ -320,13 +320,13 @@ osgBrep::Brep::Brep(const Brep& other, const osg::CopyOp& copyop) :
 }
 
 
-osgBrep::Brep::~Brep()
+osgEditable::Editable::~Editable()
 {
 }
 
 
 void
-osgBrep::Brep::compile()
+osgEditable::Editable::compile()
 {
 	compileFaces();
 	compileEdges();
@@ -335,7 +335,7 @@ osgBrep::Brep::compile()
 
 
 void
-osgBrep::Brep::compileVertices()
+osgEditable::Editable::compileVertices()
 {
 	auto geometry = _vertexGeometry.get();
 
@@ -362,7 +362,7 @@ osgBrep::Brep::compileVertices()
 
 
 void
-osgBrep::Brep::compileEdges()
+osgEditable::Editable::compileEdges()
 {
 	auto geometry = _edgeGeometry.get();
 
@@ -399,7 +399,7 @@ osgBrep::Brep::compileEdges()
 
 
 void
-osgBrep::Brep::compileFaces()
+osgEditable::Editable::compileFaces()
 {
 	auto geometry = _faceGeometry.get();
 
@@ -493,7 +493,7 @@ osgBrep::Brep::compileFaces()
 }
 
 
-void osgBrep::Brep::createVertexGeometry()
+void osgEditable::Editable::createVertexGeometry()
 {
 	_vertexGeometry = new osg::Geometry();
 
@@ -515,7 +515,7 @@ void osgBrep::Brep::createVertexGeometry()
 }
 
 
-void osgBrep::Brep::createEdgeGeometry()
+void osgEditable::Editable::createEdgeGeometry()
 {
 	_edgeGeometry = new osg::Geometry();
 
@@ -537,7 +537,7 @@ void osgBrep::Brep::createEdgeGeometry()
 }
 
 
-void osgBrep::Brep::createFaceGeometry()
+void osgEditable::Editable::createFaceGeometry()
 {
 	_faceGeometry = new osg::Geometry();
 
@@ -559,12 +559,12 @@ void osgBrep::Brep::createFaceGeometry()
 
 
 
-void osgBrep::Brep::addFace(Face* face)
+void osgEditable::Editable::addFace(Face* face)
 {
 	_faces.push_back(face);
 }
 
-void osgBrep::Brep::removeFace(Face* face)
+void osgEditable::Editable::removeFace(Face* face)
 {
 	auto itr = std::find(std::begin(_faces), std::end(_faces), face);
 
@@ -572,18 +572,18 @@ void osgBrep::Brep::removeFace(Face* face)
 		_faces.erase(itr);
 }
 
-void osgBrep::Brep::clearFaces()
+void osgEditable::Editable::clearFaces()
 {
 	_faces.clear();
 }
 
 
-void osgBrep::Brep::addEdge(Edge* edge)
+void osgEditable::Editable::addEdge(Edge* edge)
 {
 	_edges.push_back(edge);
 }
 
-void osgBrep::Brep::removeEdge(Edge* edge)
+void osgEditable::Editable::removeEdge(Edge* edge)
 {
 	auto itr = std::find(std::begin(_edges), std::end(_edges), edge);
 
@@ -591,18 +591,18 @@ void osgBrep::Brep::removeEdge(Edge* edge)
 		_edges.erase(itr);
 }
 
-void osgBrep::Brep::clearEdges()
+void osgEditable::Editable::clearEdges()
 {
 	_edges.clear();
 }
 
 
-void osgBrep::Brep::addVertex(Vertex* vertex)
+void osgEditable::Editable::addVertex(Vertex* vertex)
 {
 	_vertices.push_back(vertex);
 }
 
-void osgBrep::Brep::removeVertex(Vertex* vertex)
+void osgEditable::Editable::removeVertex(Vertex* vertex)
 {
 	auto itr = std::find(std::begin(_vertices), std::end(_vertices), vertex);
 
@@ -610,7 +610,7 @@ void osgBrep::Brep::removeVertex(Vertex* vertex)
 		_vertices.erase(itr);
 }
 
-void osgBrep::Brep::clearVertices()
+void osgEditable::Editable::clearVertices()
 {
 	_vertices.clear();
 }
@@ -618,7 +618,7 @@ void osgBrep::Brep::clearVertices()
 
 
 
-void osgBrep::Brep::showVerticesChanged()
+void osgEditable::Editable::showVerticesChanged()
 {
 	if (_vertexGeometry.valid())
 	{
@@ -630,7 +630,7 @@ void osgBrep::Brep::showVerticesChanged()
 }
 
 
-void osgBrep::Brep::showEdgesChanged()
+void osgEditable::Editable::showEdgesChanged()
 {
 	if (_edgeGeometry.valid())
 	{

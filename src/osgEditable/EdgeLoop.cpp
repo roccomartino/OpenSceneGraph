@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,17 +11,17 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include <osgBrep/EdgeLoop>
+#include <osgEditable/EdgeLoop>
 
 #include <algorithm>
 
 
-osgBrep::EdgeLoop::EdgeLoop()
+osgEditable::EdgeLoop::EdgeLoop()
 {
 }
 
 
-osgBrep::EdgeLoop::EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop) :
+osgEditable::EdgeLoop::EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop) :
 	osg::Object(other, copyop),
 	_orientedEdges(other._orientedEdges)
 {
@@ -75,18 +75,18 @@ osgBrep::EdgeLoop::EdgeLoop(const EdgeLoop& other, const osg::CopyOp& copyop) :
 }
 
 
-osgBrep::EdgeLoop::~EdgeLoop()
+osgEditable::EdgeLoop::~EdgeLoop()
 {
 }
 
 
 
-void osgBrep::EdgeLoop::addOrientedEdge(OrientedEdge* orientedEdge)
+void osgEditable::EdgeLoop::addOrientedEdge(OrientedEdge* orientedEdge)
 {
 	_orientedEdges.push_back(orientedEdge);
 }
 
-void osgBrep::EdgeLoop::removeOrientedEdge(OrientedEdge* orientedEdge)
+void osgEditable::EdgeLoop::removeOrientedEdge(OrientedEdge* orientedEdge)
 {
 	auto itr = std::find(std::begin(_orientedEdges), std::end(_orientedEdges), orientedEdge);
 
@@ -94,17 +94,17 @@ void osgBrep::EdgeLoop::removeOrientedEdge(OrientedEdge* orientedEdge)
 		_orientedEdges.erase(itr);
 }
 
-const std::vector<osg::ref_ptr<osgBrep::OrientedEdge>>& osgBrep::EdgeLoop::getOrientedEdges() const
+const std::vector<osg::ref_ptr<osgEditable::OrientedEdge>>& osgEditable::EdgeLoop::getOrientedEdges() const
 {
 	return _orientedEdges;
 }
 
-void osgBrep::EdgeLoop::clear()
+void osgEditable::EdgeLoop::clear()
 {
 	_orientedEdges.clear();
 }
 
-bool osgBrep::EdgeLoop::isLoop() const
+bool osgEditable::EdgeLoop::isLoop() const
 {
 	auto numEdges = _orientedEdges.size();
 

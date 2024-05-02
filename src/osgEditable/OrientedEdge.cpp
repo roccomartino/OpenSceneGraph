@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,16 +11,16 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include <osgBrep/OrientedEdge>
+#include <osgEditable/OrientedEdge>
 
 
-osgBrep::OrientedEdge::OrientedEdge():
+osgEditable::OrientedEdge::OrientedEdge():
 	_orientation(true)
 {
 }
 
 
-osgBrep::OrientedEdge::OrientedEdge(const OrientedEdge& other, const osg::CopyOp& copyop) :
+osgEditable::OrientedEdge::OrientedEdge(const OrientedEdge& other, const osg::CopyOp& copyop) :
 	osg::Object(other, copyop),
 	_edge(other._edge),
 	_orientation(other._orientation)
@@ -32,54 +32,54 @@ osgBrep::OrientedEdge::OrientedEdge(const OrientedEdge& other, const osg::CopyOp
 }
 
 
-osgBrep::OrientedEdge::~OrientedEdge()
+osgEditable::OrientedEdge::~OrientedEdge()
 {
 }
 
 
 
-void osgBrep::OrientedEdge::setEdge(Edge* edge)
+void osgEditable::OrientedEdge::setEdge(Edge* edge)
 {
     _edge = edge;
 }
 
-osgBrep::Edge* osgBrep::OrientedEdge::getEdge()
+osgEditable::Edge* osgEditable::OrientedEdge::getEdge()
 {
     return _edge;
 }
 
-const osgBrep::Edge* osgBrep::OrientedEdge::getEdge() const
+const osgEditable::Edge* osgEditable::OrientedEdge::getEdge() const
 {
     return _edge;
 }
 
 
-void osgBrep::OrientedEdge::setOrientation(bool orientation)
+void osgEditable::OrientedEdge::setOrientation(bool orientation)
 {
     _orientation = orientation;
 }
 
-bool osgBrep::OrientedEdge::getOrientation() const
+bool osgEditable::OrientedEdge::getOrientation() const
 {
     return _orientation;
 }
 
-const osgBrep::Vertex* osgBrep::OrientedEdge::getOrientedStart() const
+const osgEditable::Vertex* osgEditable::OrientedEdge::getOrientedStart() const
 {
 	return _orientation ? _edge->getStart() : _edge->getEnd();
 }
 
-const osgBrep::Vertex* osgBrep::OrientedEdge::getOrientedEnd() const
+const osgEditable::Vertex* osgEditable::OrientedEdge::getOrientedEnd() const
 {
 	return _orientation ? _edge->getEnd() : _edge->getStart();
 }
 
-osgBrep::Vertex* osgBrep::OrientedEdge::getOrientedStart()
+osgEditable::Vertex* osgEditable::OrientedEdge::getOrientedStart()
 {
 	return _orientation ? _edge->getStart() : _edge->getEnd();
 }
 
-osgBrep::Vertex* osgBrep::OrientedEdge::getOrientedEnd()
+osgEditable::Vertex* osgEditable::OrientedEdge::getOrientedEnd()
 {
 	return _orientation ? _edge->getEnd() : _edge->getStart();
 }

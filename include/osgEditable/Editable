@@ -1,4 +1,4 @@
-/* -*-c++-*- osgBrep - Copyright (C) 2023 Rocco Martino
+/* -*-c++-*- osgEditable - Copyright (C) 2023 Rocco Martino
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -11,11 +11,11 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGBREP_BREP
-#define OSGBREP_BREP 
+#ifndef OSGEDITABLE_EDITABLE
+#define OSGEDITABLE_EDITABLE 
 
 
-#include <osgBrep/Face>
+#include <osgEditable/Face>
 
 #include <osg/Geometry>
 #include <osg/Point>
@@ -23,21 +23,21 @@
 #include <osg/PolygonOffset>
 
 
-namespace osgBrep {
+namespace osgEditable {
 
 
-    class OSGBREP_EXPORT Brep : public osg::Geode
+    class OSGEDITABLE_EXPORT Editable : public osg::Geode
     {
     public:
 
-        META_Object(osgBrep, Brep);
+        META_Object(osgEditable, Editable);
 
-        Brep();
-        Brep(const Brep& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+        Editable();
+        Editable(const Editable& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 
     protected:
-        ~Brep();
+        ~Editable();
 
 
     public:
