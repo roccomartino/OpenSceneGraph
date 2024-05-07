@@ -403,6 +403,17 @@ osgEditable::Editable::compileFaces()
 {
 	auto geometry = _faceGeometry.get();
 
+	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
+
+	if (_faces.size() == 0)
+	{
+		geometry->setVertexArray(NULL);
+		geometry->setNormalArray(NULL);
+		geometry->setColorArray(NULL);
+
+		return;
+	}
+
 
 	auto vertexArray = new osg::Vec3Array();
 	auto normalArray = new osg::Vec3Array();
@@ -417,8 +428,6 @@ osgEditable::Editable::compileFaces()
 
 	auto triangleVertexArray = new osg::Vec3Array();
 	auto triangleNormalArray = new osg::Vec3Array();
-
-	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 
 	for (const auto& face : _faces)
 	{
@@ -483,13 +492,16 @@ osgEditable::Editable::compileFaces()
 
 
 
-	osgUtil::Tessellator tsv;
+	if (vertexArray->size())
+	{
+		osgUtil::Tessellator tsv;
 
-	tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_POLYGONS);
-	tsv.setBoundaryOnly(false);
-	tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_NONZERO);
+		tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_POLYGONS);
+		tsv.setBoundaryOnly(false);
+		tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_NONZERO);
 
-	tsv.retessellatePolygons(*geometry);
+		tsv.retessellatePolygons(*geometry);
+	}
 }
 
 
