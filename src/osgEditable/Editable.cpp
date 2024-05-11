@@ -339,6 +339,16 @@ osgEditable::Editable::compileVertices()
 {
 	auto geometry = _vertexGeometry.get();
 
+	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
+
+	if (_vertices.size() == 0)
+	{
+		geometry->setVertexArray(NULL);
+		geometry->setColorArray(NULL);
+
+		return;
+	}
+
 
 	auto vertexArray = new osg::Vec3Array();
 	auto colorArray = new osg::Vec4Array();
@@ -355,8 +365,6 @@ osgEditable::Editable::compileVertices()
 		colorArray->push_back(vertex->getColor());
 	}
 
-
-	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, vertexArray->size()));
 }
 
@@ -366,10 +374,15 @@ osgEditable::Editable::compileEdges()
 {
 	auto geometry = _edgeGeometry.get();
 
+	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 
+	if (_edges.size() == 0)
+	{
+		geometry->setVertexArray(NULL);
+		geometry->setColorArray(NULL);
 
-	const osg::Vec4 selsectedColor(1, 1, 0, 1);
-	const osg::Vec4 regularColor(0, 0, 0, 1);
+		return;
+	}
 
 
 	auto vertexArray = new osg::Vec3Array();
@@ -393,7 +406,6 @@ osgEditable::Editable::compileEdges()
 
 	}
 
-	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 	geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES, 0, vertexArray->size()));
 }
 
