@@ -153,13 +153,15 @@ class OSGUTIL_EXPORT SceneView : public osg::Object, public osg::CullSettings
             DELTA_SIMULATION_TIME_UNIFORM   = 16,
             VIEW_MATRIX_UNIFORM             = 32,
             VIEW_MATRIX_INVERSE_UNIFORM     = 64,
+            VIEWPORT_UNIFORM                = 128,
             DEFAULT_UNIFORMS                = FRAME_NUMBER_UNIFORM |
                                               FRAME_TIME_UNIFORM |
                                               DELTA_FRAME_TIME_UNIFORM |
                                               SIMULATION_TIME_UNIFORM |
                                               DELTA_SIMULATION_TIME_UNIFORM |
                                               VIEW_MATRIX_UNIFORM |
-                                              VIEW_MATRIX_INVERSE_UNIFORM,
+                                              VIEW_MATRIX_INVERSE_UNIFORM |
+                                              VIEWPORT_UNIFORM,
             ALL_UNIFORMS                    = 0x7FFFFFFF
         };
 

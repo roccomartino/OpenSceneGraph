@@ -408,8 +408,15 @@ void SceneView::updateUniforms()
 
     if (_activeUniforms & VIEW_MATRIX_INVERSE_UNIFORM)
     {
-        osg::Uniform* uniform = _localStateSet->getOrCreateUniform("osg_ViewMatrixInverse",osg::Uniform::FLOAT_MAT4);
+        osg::Uniform* uniform = _localStateSet->getOrCreateUniform("osg_ViewMatrixInverse", osg::Uniform::FLOAT_MAT4);
         uniform->set(osg::Matrix::inverse(getViewMatrix()));
+    }
+
+    if (_activeUniforms & VIEWPORT_UNIFORM)
+    {
+        osg::Uniform* uniform = _localStateSet->getOrCreateUniform("osg_Viewport", osg::Uniform::FLOAT_VEC4);
+        auto vp = getViewport();
+        uniform->set(osg::Vec4f(vp->x(), vp->y(), vp->width(), vp->height()));
     }
 
 }
