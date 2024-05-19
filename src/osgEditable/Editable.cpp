@@ -527,11 +527,6 @@ void osgEditable::Editable::createVertexGeometry()
 
 	if (_showVertices)
 		addDrawable(_vertexGeometry);
-
-
-	auto stateSet = _vertexGeometry->getOrCreateStateSet();
-
-	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
 }
 
 
@@ -545,11 +540,6 @@ void osgEditable::Editable::createEdgeGeometry()
 
 	if (_showEdges)
 		addDrawable(_edgeGeometry);
-
-
-	auto stateSet = _edgeGeometry->getOrCreateStateSet();
-
-	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
 }
 
 
@@ -562,10 +552,6 @@ void osgEditable::Editable::createFaceGeometry()
 	_faceGeometry->setUseVertexArrayObject(_useVertexArrayObjectForFaces);
 
 	addDrawable(_faceGeometry);
-
-	auto stateSet = _faceGeometry->getOrCreateStateSet();
-
-	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(0, 1, 0, 0));
 }
 
 

@@ -18,9 +18,6 @@
 #include <osgEditable/Face>
 
 #include <osg/Geometry>
-#include <osg/Point>
-#include <osg/LineWidth>
-#include <osg/PolygonOffset>
 
 
 namespace osgEditable {
@@ -91,39 +88,6 @@ namespace osgEditable {
         inline bool getShowEdges() const
         {
             return _showEdges;
-        }
-        
-        inline void setVertexSize(float value)
-        {
-            _vertexSize = value;
-            _vertexGeometry->getStateSet()->setAttributeAndModes(new osg::Point(_vertexSize));
-        }
-
-        inline float getVertexSize() const
-        {
-            return _vertexSize;
-        }
-
-        inline void setEdgeWidth(float value)
-        {
-            _edgeWidth = value;
-            _edgeGeometry->getStateSet()->setAttributeAndModes(new osg::LineWidth(_edgeWidth));
-        }
-
-        inline float getEdgeWidth() const
-        {
-            return _edgeWidth;
-        }
-
-        inline void setFaceOffset(float value)
-        {
-            _faceOffset = value;
-            _faceGeometry->getStateSet()->setAttributeAndModes(new osg::PolygonOffset(_faceOffset, 0));
-        }
-
-        inline float getFaceOffset() const
-        {
-            return _faceOffset;
         }
 
         inline void setUseDisplayListForVertices(bool value)
@@ -232,6 +196,21 @@ namespace osgEditable {
         inline bool getUseVertexArrayObjectForFaces() const
         {
             return _useVertexArrayObjectForFaces;
+        }
+
+        inline osg::Geometry* getVertexGeometry() const
+        {
+            return _vertexGeometry.get();
+        }
+
+        inline osg::Geometry* getEdgeGeometry() const
+        {
+            return _edgeGeometry.get();
+        }
+
+        inline osg::Geometry* getFaceGeometry() const
+        {
+            return _faceGeometry.get();
         }
 
 
