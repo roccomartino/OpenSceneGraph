@@ -531,10 +531,6 @@ void osgEditable::Editable::createVertexGeometry()
 
 	auto stateSet = _vertexGeometry->getOrCreateStateSet();
 
-	stateSet->setAttributeAndModes(new osg::Point(_vertexSize), osg::StateAttribute::ON);
-
-	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-
 	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
 }
 
@@ -553,10 +549,6 @@ void osgEditable::Editable::createEdgeGeometry()
 
 	auto stateSet = _edgeGeometry->getOrCreateStateSet();
 
-	stateSet->setAttributeAndModes(new osg::LineWidth(_edgeWidth), osg::StateAttribute::ON);
-
-	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-
 	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(1, 0, 0, 0));
 }
 
@@ -572,11 +564,6 @@ void osgEditable::Editable::createFaceGeometry()
 	addDrawable(_faceGeometry);
 
 	auto stateSet = _faceGeometry->getOrCreateStateSet();
-
-	stateSet->setAttributeAndModes(new osg::PolygonOffset(_faceOffset, 0), osg::StateAttribute::ON);
-
-	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-	stateSet->setMode(GL_POLYGON_OFFSET_FILL, osg::StateAttribute::ON);
 
 	stateSet->getOrCreateUniform("uMaterial", osg::Uniform::FLOAT_VEC4)->set(osg::Vec4(0, 1, 0, 0));
 }
