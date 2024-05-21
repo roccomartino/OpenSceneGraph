@@ -43,17 +43,17 @@ osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop
 		std::vector<Vertex*> vertexDestination;
 		{
 			auto add_if_not_present = [&vertexSource, &vertexDestination, &copyop](Vertex* vertex)
-			{
-				auto position = std::find(std::begin(vertexSource), std::end(vertexSource), vertex);
-
-				if (position == std::end(vertexSource))
 				{
-					auto clonedVertex = (Vertex*)vertex->clone(osg::CopyOp::SHALLOW_COPY);
+					auto position = std::find(std::begin(vertexSource), std::end(vertexSource), vertex);
 
-					vertexSource.push_back(vertex);
-					vertexDestination.push_back(clonedVertex);
-				}
-			};
+					if (position == std::end(vertexSource))
+					{
+						auto clonedVertex = (Vertex*)vertex->clone(osg::CopyOp::SHALLOW_COPY);
+
+						vertexSource.push_back(vertex);
+						vertexDestination.push_back(clonedVertex);
+					}
+				};
 
 
 			for (auto vertex : _vertices)
@@ -87,17 +87,17 @@ osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop
 		std::vector<Edge*> edgeDestination;
 		{
 			auto add_if_not_present = [&edgeSource, &edgeDestination, &copyop](Edge* edge)
-			{
-				auto position = std::find(std::begin(edgeSource), std::end(edgeSource), edge);
-
-				if (position == std::end(edgeSource))
 				{
-					auto clonedEdge = (Edge*)edge->clone(osg::CopyOp::SHALLOW_COPY);
+					auto position = std::find(std::begin(edgeSource), std::end(edgeSource), edge);
 
-					edgeSource.push_back(edge);
-					edgeDestination.push_back(clonedEdge);
-				}
-			};
+					if (position == std::end(edgeSource))
+					{
+						auto clonedEdge = (Edge*)edge->clone(osg::CopyOp::SHALLOW_COPY);
+
+						edgeSource.push_back(edge);
+						edgeDestination.push_back(clonedEdge);
+					}
+				};
 
 
 			for (auto face : other._faces)
@@ -123,17 +123,17 @@ osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop
 		std::vector<OrientedEdge*> orientedEdgeDestination;
 		{
 			auto add_if_not_present = [&orientedEdgeSource, &orientedEdgeDestination, &copyop](OrientedEdge* orientedEdge)
-			{
-				auto position = std::find(std::begin(orientedEdgeSource), std::end(orientedEdgeSource), orientedEdge);
-
-				if (position == std::end(orientedEdgeSource))
 				{
-					auto clonedOrientedEdge = (OrientedEdge*)orientedEdge->clone(osg::CopyOp::SHALLOW_COPY);
+					auto position = std::find(std::begin(orientedEdgeSource), std::end(orientedEdgeSource), orientedEdge);
 
-					orientedEdgeSource.push_back(orientedEdge);
-					orientedEdgeDestination.push_back(clonedOrientedEdge);
-				}
-			};
+					if (position == std::end(orientedEdgeSource))
+					{
+						auto clonedOrientedEdge = (OrientedEdge*)orientedEdge->clone(osg::CopyOp::SHALLOW_COPY);
+
+						orientedEdgeSource.push_back(orientedEdge);
+						orientedEdgeDestination.push_back(clonedOrientedEdge);
+					}
+				};
 
 
 			for (auto face : other._faces)
@@ -153,17 +153,17 @@ osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop
 		std::vector<EdgeLoop*> edgeLoopDestination;
 		{
 			auto add_if_not_present = [&edgeLoopSource, &edgeLoopDestination, &copyop](EdgeLoop* edgeLoop)
-			{
-				auto position = std::find(std::begin(edgeLoopSource), std::end(edgeLoopSource), edgeLoop);
-
-				if (position == std::end(edgeLoopSource))
 				{
-					auto clonedEdgeLoop = (EdgeLoop*)edgeLoop->clone(osg::CopyOp::SHALLOW_COPY);
+					auto position = std::find(std::begin(edgeLoopSource), std::end(edgeLoopSource), edgeLoop);
 
-					edgeLoopSource.push_back(edgeLoop);
-					edgeLoopDestination.push_back(clonedEdgeLoop);
-				}
-			};
+					if (position == std::end(edgeLoopSource))
+					{
+						auto clonedEdgeLoop = (EdgeLoop*)edgeLoop->clone(osg::CopyOp::SHALLOW_COPY);
+
+						edgeLoopSource.push_back(edgeLoop);
+						edgeLoopDestination.push_back(clonedEdgeLoop);
+					}
+				};
 
 
 			for (auto face : other._faces)
@@ -180,17 +180,17 @@ osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop
 		std::vector<Face*> faceDestination;
 		{
 			auto add_if_not_present = [&faceSource, &faceDestination, &copyop](Face* face)
-			{
-				auto position = std::find(std::begin(faceSource), std::end(faceSource), face);
-
-				if (position == std::end(faceSource))
 				{
-					auto clonedFace = (Face*)face->clone(osg::CopyOp::SHALLOW_COPY);
+					auto position = std::find(std::begin(faceSource), std::end(faceSource), face);
 
-					faceSource.push_back(face);
-					faceDestination.push_back(clonedFace);
-				}
-			};
+					if (position == std::end(faceSource))
+					{
+						auto clonedFace = (Face*)face->clone(osg::CopyOp::SHALLOW_COPY);
+
+						faceSource.push_back(face);
+						faceDestination.push_back(clonedFace);
+					}
+				};
 
 
 			for (auto face : other._faces)
@@ -203,36 +203,36 @@ osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop
 
 
 		auto find_vertex_clone = [&vertexSource, &vertexDestination](Vertex* vertex) -> Vertex*
-		{
-			auto position = std::find(std::begin(vertexSource), std::end(vertexSource), vertex);
-			auto idx = position - std::begin(vertexSource);
+			{
+				auto position = std::find(std::begin(vertexSource), std::end(vertexSource), vertex);
+				auto idx = position - std::begin(vertexSource);
 
-			return vertexDestination[idx];
-		};
+				return vertexDestination[idx];
+			};
 
 		auto find_edge_clone = [&edgeSource, &edgeDestination](Edge* edge) -> Edge*
-		{
-			auto position = std::find(std::begin(edgeSource), std::end(edgeSource), edge);
-			auto idx = position - std::begin(edgeSource);
+			{
+				auto position = std::find(std::begin(edgeSource), std::end(edgeSource), edge);
+				auto idx = position - std::begin(edgeSource);
 
-			return edgeDestination[idx];
-		};
+				return edgeDestination[idx];
+			};
 
 		auto find_oriented_edge_clone = [&orientedEdgeSource, &orientedEdgeDestination](OrientedEdge* orientedEdge) -> OrientedEdge*
-		{
-			auto position = std::find(std::begin(orientedEdgeSource), std::end(orientedEdgeSource), orientedEdge);
-			auto idx = position - std::begin(orientedEdgeSource);
+			{
+				auto position = std::find(std::begin(orientedEdgeSource), std::end(orientedEdgeSource), orientedEdge);
+				auto idx = position - std::begin(orientedEdgeSource);
 
-			return orientedEdgeDestination[idx];
-		};
+				return orientedEdgeDestination[idx];
+			};
 
 		auto find_edge_loop_clone = [&edgeLoopSource, &edgeLoopDestination](EdgeLoop* edgeLoop) -> EdgeLoop*
-		{
-			auto position = std::find(std::begin(edgeLoopSource), std::end(edgeLoopSource), edgeLoop);
-			auto idx = position - std::begin(edgeLoopSource);
+			{
+				auto position = std::find(std::begin(edgeLoopSource), std::end(edgeLoopSource), edgeLoop);
+				auto idx = position - std::begin(edgeLoopSource);
 
-			return edgeLoopDestination[idx];
-		};
+				return edgeLoopDestination[idx];
+			};
 
 
 		//
@@ -360,7 +360,7 @@ osgEditable::Editable::compileVertices()
 	for (auto vertex : _vertices)
 	{
 		auto position = vertex->getPosition();
-		
+
 		vertexArray->push_back(position);
 		colorArray->push_back(vertex->getColor());
 	}
@@ -396,7 +396,7 @@ osgEditable::Editable::compileEdges()
 	{
 		auto start = edge->getStart();
 		auto end = edge->getEnd();
-;
+		;
 
 		vertexArray->push_back(start->getPosition());
 		vertexArray->push_back(end->getPosition());
@@ -488,7 +488,16 @@ osgEditable::Editable::compileFaces()
 				normalArray->push_back(normal);
 			}
 
-			geometry->addPrimitiveSet(new osg::DrawArrays(GL_POLYGON, startingIndex, vertexArray->size() - startingIndex));
+			std::vector<int> indices;
+
+			for (auto i = startingIndex; i < vertexArray->size(); i++)
+				indices.push_back(i);
+
+			auto primitiveSet = triangulate(vertexArray, indices, normal);
+
+			geometry->addPrimitiveSet(primitiveSet);
+
+			//geometry->addPrimitiveSet(new osg::DrawArrays(GL_POLYGON, startingIndex, vertexArray->size() - startingIndex));
 		}
 	}
 
@@ -504,16 +513,16 @@ osgEditable::Editable::compileFaces()
 
 
 
-	if (vertexArray->size())
-	{
-		osgUtil::Tessellator tsv;
+	//if (vertexArray->size())
+	//{
+	//	osgUtil::Tessellator tsv;
 
-		tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_POLYGONS);
-		tsv.setBoundaryOnly(false);
-		tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_NONZERO);
+	//	tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_POLYGONS);
+	//	tsv.setBoundaryOnly(false);
+	//	tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_NONZERO);
 
-		tsv.retessellatePolygons(*geometry);
-	}
+	//	tsv.retessellatePolygons(*geometry);
+	//}
 }
 
 
@@ -636,4 +645,118 @@ void osgEditable::Editable::showEdgesChanged()
 		else
 			removeDrawable(_edgeGeometry);
 	}
+}
+
+
+osg::PrimitiveSet* osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<int> indices, const osg::Vec3& normal)
+{
+	const float eps = 1e-5;
+
+	auto counter = 0;
+
+	auto collide = [eps](std::vector<osg::Vec2f> vertices, int start0, int end0, int start1, int end1)
+		{
+			auto p0 = vertices[start0];
+			auto p1 = vertices[start1];
+
+			auto u = vertices[end0] - p0;
+			auto ul = u.normalize();
+
+			auto v = vertices[end1] - p1;
+			auto vl = v.normalize();
+
+			if (osg::absolute(u * v) > 1 - eps)
+				return false;
+
+			auto A =
+				osg::Matrixf::inverse(
+					osg::Matrixf(
+						u.x(), -v.x(), 0, 0,
+						u.y(), -v.y(), 0, 0,
+						0, 0, 1, 0,
+						0, 0, 0, 1));
+
+			auto x = osg::Vec4(p1.x() - p0.x(), p1.y() - p0.y(), 0, 1);
+
+			auto result = A * x;
+
+			auto s = result.x();
+			auto t = result.y();
+
+			return
+				s > 0 &&
+				t > 0 &&
+				s < ul &&
+				t < vl;
+		};
+
+
+
+	auto axis2 = -normal;
+
+	auto axis0 = osg::absolute(axis2 * osg::Z_AXIS) < 1 - eps ?
+		axis2 ^ osg::Z_AXIS :
+		axis2 ^ osg::X_AXIS;
+
+	auto axis1 = axis2 ^ axis0;
+
+	axis0.normalize();
+	axis1.normalize();
+	axis2.normalize();
+
+	auto viewProjection = osg::Matrix(
+		axis0.x(), axis1.x(), 0, 0,
+		axis0.y(), axis1.y(), 0, 0,
+		axis0.z(), axis1.z(), 0, 0,
+		0, 0, 0, 1);
+
+	std::vector<osg::Vec2f> projected(vertices->size());
+
+	for (auto idx : indices)
+	{
+		auto v = vertices->at(idx) * viewProjection;
+		projected[idx] = osg::Vec2f(v.x(), v.y());
+	}
+
+
+	auto numIndices = indices.size();
+
+	std::vector<unsigned int> triangles;
+
+	while (numIndices >= 3)
+	{
+		for (unsigned int i = 0; i < numIndices; i++)
+		{
+			unsigned int i0 = indices[i];
+			unsigned int i1 = indices[(i + 1) % numIndices];
+			unsigned int i2 = indices[(i + 2) % numIndices];
+
+			bool ok = true;
+
+			for (int j = (i + 2) % numIndices; j != i; j = (j + 1) % numIndices)
+			{
+				if (collide(projected, i2, i0, indices[j], indices[(j + 1) % numIndices]))
+				{
+					ok = false;
+					break;
+				}
+			}
+
+			if (ok)
+			{
+				triangles.push_back(i0);
+				triangles.push_back(i1);
+				triangles.push_back(i2);
+				indices.erase(indices.begin() + (i + 1) % numIndices);
+				numIndices--;
+				break;
+			}
+		}
+	}
+
+	auto triangleArray = new unsigned int[triangles.size()];
+
+	std::copy(triangles.begin(), triangles.end(), triangleArray);
+
+	return new osg::DrawElementsUInt(GL_TRIANGLES, triangles.size(), triangleArray);
 }
