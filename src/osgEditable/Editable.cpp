@@ -13,13 +13,14 @@
 
 #include <osgEditable/Editable>
 
-#include <osgUtil/Tessellator>
-
 #include <algorithm>
 
 
 osgEditable::Editable::Editable()
 {
+	_vertexArray = new osg::Vec3Array();
+	_colorArray = new osg::Vec4Array();
+
 	createVertexGeometry();
 	createEdgeGeometry();
 	createFaceGeometry();
@@ -30,6 +31,9 @@ osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop
 	osg::Geode(other, copyop),
 	_faces(other._faces)
 {
+	_vertexArray = new osg::Vec3Array();
+	_colorArray = new osg::Vec4Array();
+
 	createVertexGeometry();
 	createEdgeGeometry();
 	createFaceGeometry();
@@ -328,9 +332,23 @@ osgEditable::Editable::~Editable()
 void
 osgEditable::Editable::compile()
 {
+	_vertexArray->clear();
+	_colorArray->clear();
+
+	for (const auto& item : _vertices)
+	{
+		item->setIndexInternal(_vertexArray->size());
+
+		_vertexArray->push_back(item->getPosition());
+		_colorArray->push_back(item->getColor());
+	}
+
 	compileFaces();
 	compileEdges();
 	compileVertices();
+
+	_vertexArray->dirty();
+	_colorArray->dirty();
 }
 
 
@@ -342,30 +360,9 @@ osgEditable::Editable::compileVertices()
 	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 
 	if (_vertices.size() == 0)
-	{
-		geometry->setVertexArray(NULL);
-		geometry->setColorArray(NULL);
-
 		return;
-	}
 
-
-	auto vertexArray = new osg::Vec3Array();
-	auto colorArray = new osg::Vec4Array();
-
-	geometry->setVertexArray(vertexArray);
-	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
-
-
-	for (auto vertex : _vertices)
-	{
-		auto position = vertex->getPosition();
-
-		vertexArray->push_back(position);
-		colorArray->push_back(vertex->getColor());
-	}
-
-	geometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, vertexArray->size()));
+	geometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, _vertexArray->size()));
 }
 
 
@@ -377,36 +374,22 @@ osgEditable::Editable::compileEdges()
 	geometry->removePrimitiveSet(0, geometry->getNumPrimitiveSets());
 
 	if (_edges.size() == 0)
-	{
-		geometry->setVertexArray(NULL);
-		geometry->setColorArray(NULL);
-
 		return;
-	}
 
 
-	auto vertexArray = new osg::Vec3Array();
-	auto colorArray = new osg::Vec4Array();
-
-	geometry->setVertexArray(vertexArray);
-	geometry->setColorArray(colorArray, osg::Array::BIND_PER_VERTEX);
-
+	std::vector<unsigned int> indices;
 
 	for (auto edge : _edges)
 	{
 		auto start = edge->getStart();
 		auto end = edge->getEnd();
-		;
 
-		vertexArray->push_back(start->getPosition());
-		vertexArray->push_back(end->getPosition());
-
-		colorArray->push_back(start->getColor());
-		colorArray->push_back(end->getColor());
+		indices.push_back(start->getIndexInternal());
+		indices.push_back(end->getIndexInternal());
 
 	}
 
-	geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES, 0, vertexArray->size()));
+	geometry->addPrimitiveSet(new osg::DrawElementsUInt(GL_LINES, indices.size(), &indices.front()));
 }
 
 
@@ -493,11 +476,8 @@ osgEditable::Editable::compileFaces()
 			for (auto i = startingIndex; i < vertexArray->size(); i++)
 				indices.push_back(i);
 
-			auto primitiveSet = triangulate(vertexArray, indices, normal);
-
-			geometry->addPrimitiveSet(primitiveSet);
-
-			//geometry->addPrimitiveSet(new osg::DrawArrays(GL_POLYGON, startingIndex, vertexArray->size() - startingIndex));
+			
+			geometry->addPrimitiveSet(triangulate(vertexArray, indices, normal));
 		}
 	}
 
@@ -510,19 +490,6 @@ osgEditable::Editable::compileFaces()
 
 		geometry->addPrimitiveSet(new osg::DrawArrays(GL_TRIANGLES, firstTriangleIndex, triangleVertexArray->size()));
 	}
-
-
-
-	//if (vertexArray->size())
-	//{
-	//	osgUtil::Tessellator tsv;
-
-	//	tsv.setTessellationType(osgUtil::Tessellator::TESS_TYPE_POLYGONS);
-	//	tsv.setBoundaryOnly(false);
-	//	tsv.setWindingType(osgUtil::Tessellator::TESS_WINDING_NONZERO);
-
-	//	tsv.retessellatePolygons(*geometry);
-	//}
 }
 
 
@@ -530,6 +497,8 @@ void osgEditable::Editable::createVertexGeometry()
 {
 	_vertexGeometry = new osg::Geometry();
 
+	_vertexGeometry->setVertexArray(_vertexArray);
+	_vertexGeometry->setColorArray(_colorArray, osg::Array::BIND_PER_VERTEX);
 	_vertexGeometry->setUseDisplayList(_useDisplayListForVertices);
 	_vertexGeometry->setUseVertexBufferObjects(_useVertexBufferObjectForVertices);
 	_vertexGeometry->setUseVertexArrayObject(_useVertexArrayObjectForVertices);
@@ -543,6 +512,8 @@ void osgEditable::Editable::createEdgeGeometry()
 {
 	_edgeGeometry = new osg::Geometry();
 
+	_edgeGeometry->setVertexArray(_vertexArray);
+	_edgeGeometry->setColorArray(_colorArray, osg::Array::BIND_PER_VERTEX);
 	_edgeGeometry->setUseDisplayList(_useDisplayListForEdges);
 	_edgeGeometry->setUseVertexBufferObjects(_useVertexBufferObjectForEdges);
 	_edgeGeometry->setUseVertexArrayObject(_useVertexArrayObjectForEdges);

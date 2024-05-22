@@ -43,11 +43,16 @@ namespace osgEditable {
         inline void setColor(const osg::Vec4& value) { _color = value; }
         inline const osg::Vec4& getColor() const { return _color; }
 
+        inline void setIndexInternal(unsigned int value) { _indexInternal = value; }
+        inline unsigned int getIndexInternal() const { return _indexInternal; }
+
 
     private:
         osg::Vec3 _position;
 
         osg::Vec4 _color{ osg::Vec4(0, 0, 0, 1) };
+
+        unsigned int _indexInternal{ 0xFFFFFFFF };
     };
 
 }

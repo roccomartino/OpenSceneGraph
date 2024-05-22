@@ -56,6 +56,7 @@ namespace osgEditable {
     public:
         void compile();
 
+    private:
         void compileVertices();
         void compileEdges();
         void compileFaces();
@@ -252,6 +253,9 @@ namespace osgEditable {
         float _vertexSize{ 6 };
         float _edgeWidth{ 2 };
         float _faceOffset{ 1 };
+
+        osg::ref_ptr<osg::Vec3Array> _vertexArray;
+        osg::ref_ptr<osg::Vec4Array> _colorArray;
     };
 
 }
