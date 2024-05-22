@@ -418,9 +418,7 @@ osgEditable::Editable::compileFaces()
 	colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
 
 	for (int i = 0; i < _vertices.size(); i++)
-	{
 		normalArray->push_back(osg::Vec3());
-	}
 
 	std::vector<unsigned int> indexArray;
 
@@ -668,7 +666,7 @@ void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<un
 
 
 
-	auto axis2 = -normal;
+	auto axis2 = normal;
 
 	auto axis0 = osg::absolute(axis2 * osg::Z_AXIS) < 1 - eps ?
 		axis2 ^ osg::Z_AXIS :
@@ -714,6 +712,17 @@ void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<un
 
 			for (int j = (i + 2) % numIndices; j != i; j = (j + 1) % numIndices)
 			{
+				auto d1 = projected.at(i1) - projected.at(i0);
+				auto d2 = projected.at(i2) - projected.at(i0);
+
+				auto crossProduct = d1.x() * d2.y() - d1.y() * d2.x();
+
+				if (crossProduct <= 0)
+				{
+					ok = false;
+					break;
+				}
+
 				if (collide(projected, i2, i0, indices[j], indices[(j + 1) % numIndices]))
 				{
 					ok = false;
