@@ -122,3 +122,26 @@ bool osgEditable::EdgeLoop::isLoop() const
 
 	return true;
 }
+
+bool osgEditable::EdgeLoop::isCcw(const osg::Vec3& normal) const
+{
+	auto numEdges = _orientedEdges.size();
+
+	double A = 0;
+
+	for (int i = 0u; i < numEdges; i++)
+	{
+		auto currentOriented = _orientedEdges[i].get();
+		auto nextOriented = _orientedEdges[(i + 1) % numEdges].get();
+
+		auto d1 = currentOriented->getOrientedEnd()->getPosition() - currentOriented->getOrientedStart()->getPosition();
+		auto d2 = nextOriented->getOrientedEnd()->getPosition() - nextOriented->getOrientedStart()->getPosition();
+
+		d1.normalize();
+		d2.normalize();
+
+		A += (d1 ^ d2) * normal;
+	}
+
+	return A > 0;
+}

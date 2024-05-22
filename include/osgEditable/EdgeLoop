@@ -46,6 +46,8 @@ namespace osgEditable {
 
         bool isLoop() const;
 
+        bool isCcw(const osg::Vec3& normal) const;
+
 
     private:
         std::vector<osg::ref_ptr<OrientedEdge>> _orientedEdges;

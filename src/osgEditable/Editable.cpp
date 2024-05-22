@@ -480,7 +480,7 @@ osgEditable::Editable::compileFaces()
 				polyIndices.push_back(idx);
 			}
 
-			triangulate(_vertexArray, polyIndices, normal);
+			triangulate(_vertexArray, polyIndices, normal, loop->isCcw(normal));
 
 			geometry->addPrimitiveSet(new osg::DrawElementsUInt(GL_TRIANGLES, polyIndices.size(), &polyIndices.front()));
 		}
@@ -622,7 +622,7 @@ void osgEditable::Editable::showEdgesChanged()
 }
 
 
-void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal)
+void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal, bool ccw)
 {
 	const float eps = 1e-5f;
 
@@ -667,6 +667,9 @@ void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<un
 
 
 	auto axis2 = normal;
+
+	if (!ccw)
+		axis2 *= -1;
 
 	auto axis0 = osg::absolute(axis2 * osg::Z_AXIS) < 1 - eps ?
 		axis2 ^ osg::Z_AXIS :
