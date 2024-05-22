@@ -402,7 +402,6 @@ osgEditable::Editable::compileFaces()
 
 	if (_faces.size() == 0)
 	{
-		geometry->setVertexArray(NULL);
 		geometry->setNormalArray(NULL);
 		geometry->setColorArray(NULL);
 
@@ -410,19 +409,20 @@ osgEditable::Editable::compileFaces()
 	}
 
 
-	auto vertexArray = new osg::Vec3Array();
 	auto normalArray = new osg::Vec3Array();
 	auto colorArray = new osg::Vec4Array();
 
-	geometry->setVertexArray(vertexArray);
 	geometry->setNormalArray(normalArray, osg::Array::BIND_PER_VERTEX);
 
 	geometry->setColorArray(colorArray, osg::Array::BIND_OVERALL);
 	colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
 
+	for (int i = 0; i < _vertices.size(); i++)
+	{
+		normalArray->push_back(osg::Vec3());
+	}
 
-	auto triangleVertexArray = new osg::Vec3Array();
-	auto triangleNormalArray = new osg::Vec3Array();
+	std::vector<unsigned int> indexArray;
 
 	for (const auto& face : _faces)
 	{
@@ -432,64 +432,67 @@ osgEditable::Editable::compileFaces()
 		if (!loop->isLoop())
 			continue;
 
-		auto startingIndex = vertexArray->size();
-
 		auto edges = face->getEdgeLoop()->getOrientedEdges();
 		auto normal = face->getNormal();
 
 		if (edges.size() == 3)
 		{
-			triangleVertexArray->push_back(edges[0]->getOrientedStart()->getPosition());
-			triangleVertexArray->push_back(edges[1]->getOrientedStart()->getPosition());
-			triangleVertexArray->push_back(edges[2]->getOrientedStart()->getPosition());
-			triangleNormalArray->push_back(normal);
-			triangleNormalArray->push_back(normal);
-			triangleNormalArray->push_back(normal);
+			auto idx0 = edges[0]->getOrientedStart()->getIndexInternal();
+			auto idx1 = edges[1]->getOrientedStart()->getIndexInternal();
+			auto idx2 = edges[2]->getOrientedStart()->getIndexInternal();
+
+			(*normalArray)[idx0] += normal;
+			(*normalArray)[idx1] += normal;
+			(*normalArray)[idx2] += normal;
+
+			indexArray.push_back(idx0);
+			indexArray.push_back(idx1);
+			indexArray.push_back(idx2);
 		}
 
 		else if (edges.size() == 4)
 		{
-			triangleVertexArray->push_back(edges[0]->getOrientedStart()->getPosition());
-			triangleVertexArray->push_back(edges[1]->getOrientedStart()->getPosition());
-			triangleVertexArray->push_back(edges[2]->getOrientedStart()->getPosition());
-			triangleNormalArray->push_back(normal);
-			triangleNormalArray->push_back(normal);
-			triangleNormalArray->push_back(normal);
-			triangleVertexArray->push_back(edges[0]->getOrientedStart()->getPosition());
-			triangleVertexArray->push_back(edges[2]->getOrientedStart()->getPosition());
-			triangleVertexArray->push_back(edges[3]->getOrientedStart()->getPosition());
-			triangleNormalArray->push_back(normal);
-			triangleNormalArray->push_back(normal);
-			triangleNormalArray->push_back(normal);
+			auto idx0 = edges[0]->getOrientedStart()->getIndexInternal();
+			auto idx1 = edges[1]->getOrientedStart()->getIndexInternal();
+			auto idx2 = edges[2]->getOrientedStart()->getIndexInternal();
+			auto idx3 = edges[3]->getOrientedStart()->getIndexInternal();
+
+			(*normalArray)[idx0] += normal;
+			(*normalArray)[idx1] += normal;
+			(*normalArray)[idx2] += normal;
+			(*normalArray)[idx3] += normal;
+
+			indexArray.push_back(idx0);
+			indexArray.push_back(idx1);
+			indexArray.push_back(idx2);
+
+			indexArray.push_back(idx0);
+			indexArray.push_back(idx2);
+			indexArray.push_back(idx3);
 		}
 
 		else
 		{
+			std::vector<unsigned int> polyIndices;
+
 			for (const auto& edge : edges)
 			{
-				vertexArray->push_back(edge->getOrientedStart()->getPosition());
-				normalArray->push_back(normal);
+				auto idx = edge->getOrientedStart()->getIndexInternal();
+				(*normalArray)[idx] += normal;
+				polyIndices.push_back(idx);
 			}
 
-			std::vector<int> indices;
+			triangulate(_vertexArray, polyIndices, normal);
 
-			for (auto i = startingIndex; i < vertexArray->size(); i++)
-				indices.push_back(i);
-
-			
-			geometry->addPrimitiveSet(triangulate(vertexArray, indices, normal));
+			geometry->addPrimitiveSet(new osg::DrawElementsUInt(GL_TRIANGLES, polyIndices.size(), &polyIndices.front()));
 		}
 	}
 
-	if (!triangleVertexArray->empty())
-	{
-		auto firstTriangleIndex = vertexArray->size();
+	for (auto& item : *normalArray)
+		item.normalize();
 
-		vertexArray->insert(vertexArray->end(), triangleVertexArray->begin(), triangleVertexArray->end());
-		normalArray->insert(normalArray->end(), triangleNormalArray->begin(), triangleNormalArray->end());
-
-		geometry->addPrimitiveSet(new osg::DrawArrays(GL_TRIANGLES, firstTriangleIndex, triangleVertexArray->size()));
-	}
+	if (!indexArray.empty())
+		geometry->addPrimitiveSet(new osg::DrawElementsUInt(GL_TRIANGLES, indexArray.size(), &indexArray.front()));
 }
 
 
@@ -527,6 +530,8 @@ void osgEditable::Editable::createFaceGeometry()
 {
 	_faceGeometry = new osg::Geometry();
 
+	_faceGeometry->setVertexArray(_vertexArray);
+	//_faceGeometry->setColorArray(_colorArray, osg::Array::BIND_PER_VERTEX);
 	_faceGeometry->setUseDisplayList(_useDisplayListForFaces);
 	_faceGeometry->setUseVertexBufferObjects(_useVertexBufferObjectForFaces);
 	_faceGeometry->setUseVertexArrayObject(_useVertexArrayObjectForFaces);
@@ -619,9 +624,9 @@ void osgEditable::Editable::showEdgesChanged()
 }
 
 
-osg::PrimitiveSet* osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<int> indices, const osg::Vec3& normal)
+void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal)
 {
-	const float eps = 1e-5;
+	const float eps = 1e-5f;
 
 	auto counter = 0;
 
@@ -690,9 +695,12 @@ osg::PrimitiveSet* osgEditable::Editable::triangulate(osg::Vec3Array* vertices, 
 	}
 
 
-	auto numIndices = indices.size();
+	std::vector<unsigned int> newIndices;
 
-	std::vector<unsigned int> triangles;
+
+
+
+	auto numIndices = indices.size();
 
 	while (numIndices >= 3)
 	{
@@ -715,9 +723,9 @@ osg::PrimitiveSet* osgEditable::Editable::triangulate(osg::Vec3Array* vertices, 
 
 			if (ok)
 			{
-				triangles.push_back(i0);
-				triangles.push_back(i1);
-				triangles.push_back(i2);
+				newIndices.push_back(i0);
+				newIndices.push_back(i1);
+				newIndices.push_back(i2);
 				indices.erase(indices.begin() + (i + 1) % numIndices);
 				numIndices--;
 				break;
@@ -725,9 +733,8 @@ osg::PrimitiveSet* osgEditable::Editable::triangulate(osg::Vec3Array* vertices, 
 		}
 	}
 
-	auto triangleArray = new unsigned int[triangles.size()];
+	indices.clear();
 
-	std::copy(triangles.begin(), triangles.end(), triangleArray);
-
-	return new osg::DrawElementsUInt(GL_TRIANGLES, triangles.size(), triangleArray);
+	for (auto item : newIndices)
+		indices.push_back(item);
 }

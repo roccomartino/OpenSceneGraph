@@ -223,7 +223,7 @@ namespace osgEditable {
         void showVerticesChanged();
         void showEdgesChanged();
 
-        osg::PrimitiveSet* triangulate(osg::Vec3Array* vertices, std::vector<int> indices, const osg::Vec3& normal);
+        void triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal);
 
 
     private:
