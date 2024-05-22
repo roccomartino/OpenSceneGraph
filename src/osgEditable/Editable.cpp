@@ -19,6 +19,7 @@
 osgEditable::Editable::Editable()
 {
 	_vertexArray = new osg::Vec3Array();
+	_normalArray = new osg::Vec3Array();
 	_colorArray = new osg::Vec4Array();
 
 	createVertexGeometry();
@@ -32,6 +33,7 @@ osgEditable::Editable::Editable(const Editable& other, const osg::CopyOp& copyop
 	_faces(other._faces)
 {
 	_vertexArray = new osg::Vec3Array();
+	_normalArray = new osg::Vec3Array();
 	_colorArray = new osg::Vec4Array();
 
 	createVertexGeometry();
@@ -348,6 +350,7 @@ osgEditable::Editable::compile()
 	compileVertices();
 
 	_vertexArray->dirty();
+	_normalArray->dirty();
 	_colorArray->dirty();
 }
 
@@ -402,23 +405,20 @@ osgEditable::Editable::compileFaces()
 
 	if (_faces.size() == 0)
 	{
-		geometry->setNormalArray(NULL);
 		geometry->setColorArray(NULL);
-
 		return;
 	}
 
 
-	auto normalArray = new osg::Vec3Array();
-	auto colorArray = new osg::Vec4Array();
+	_normalArray->clear();
 
-	geometry->setNormalArray(normalArray, osg::Array::BIND_PER_VERTEX);
+	auto colorArray = new osg::Vec4Array();
 
 	geometry->setColorArray(colorArray, osg::Array::BIND_OVERALL);
 	colorArray->push_back(osg::Vec4(0.8f, 0.8f, 0.8f, 1.0f));
 
 	for (int i = 0; i < _vertices.size(); i++)
-		normalArray->push_back(osg::Vec3());
+		_normalArray->push_back(osg::Vec3());
 
 	std::vector<unsigned int> indexArray;
 
@@ -439,9 +439,9 @@ osgEditable::Editable::compileFaces()
 			auto idx1 = edges[1]->getOrientedStart()->getIndexInternal();
 			auto idx2 = edges[2]->getOrientedStart()->getIndexInternal();
 
-			(*normalArray)[idx0] += normal;
-			(*normalArray)[idx1] += normal;
-			(*normalArray)[idx2] += normal;
+			(*_normalArray)[idx0] += normal;
+			(*_normalArray)[idx1] += normal;
+			(*_normalArray)[idx2] += normal;
 
 			indexArray.push_back(idx0);
 			indexArray.push_back(idx1);
@@ -455,10 +455,10 @@ osgEditable::Editable::compileFaces()
 			auto idx2 = edges[2]->getOrientedStart()->getIndexInternal();
 			auto idx3 = edges[3]->getOrientedStart()->getIndexInternal();
 
-			(*normalArray)[idx0] += normal;
-			(*normalArray)[idx1] += normal;
-			(*normalArray)[idx2] += normal;
-			(*normalArray)[idx3] += normal;
+			(*_normalArray)[idx0] += normal;
+			(*_normalArray)[idx1] += normal;
+			(*_normalArray)[idx2] += normal;
+			(*_normalArray)[idx3] += normal;
 
 			indexArray.push_back(idx0);
 			indexArray.push_back(idx1);
@@ -476,7 +476,7 @@ osgEditable::Editable::compileFaces()
 			for (const auto& edge : edges)
 			{
 				auto idx = edge->getOrientedStart()->getIndexInternal();
-				(*normalArray)[idx] += normal;
+				(*_normalArray)[idx] += normal;
 				polyIndices.push_back(idx);
 			}
 
@@ -486,7 +486,7 @@ osgEditable::Editable::compileFaces()
 		}
 	}
 
-	for (auto& item : *normalArray)
+	for (auto& item : *_normalArray)
 		item.normalize();
 
 	if (!indexArray.empty())
@@ -530,6 +530,7 @@ void osgEditable::Editable::createFaceGeometry()
 
 	_faceGeometry->setVertexArray(_vertexArray);
 	//_faceGeometry->setColorArray(_colorArray, osg::Array::BIND_PER_VERTEX);
+	_faceGeometry->setNormalArray(_normalArray, osg::Array::BIND_PER_VERTEX);
 	_faceGeometry->setUseDisplayList(_useDisplayListForFaces);
 	_faceGeometry->setUseVertexBufferObjects(_useVertexBufferObjectForFaces);
 	_faceGeometry->setUseVertexArrayObject(_useVertexArrayObjectForFaces);
@@ -749,4 +750,35 @@ void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<un
 
 	for (auto item : newIndices)
 		indices.push_back(item);
+}
+
+
+void osgEditable::Editable::CalculatePerVertexNormals()
+{
+	_normalArray->clear();
+
+	if (_faces.size() == 0)
+		return;
+
+	for (int i = 0; i < _vertices.size(); i++)
+		_normalArray->push_back(osg::Vec3());
+
+	for (const auto& face : _faces)
+	{
+		auto loop = face->getEdgeLoop();
+
+		if (!loop->isLoop())
+			continue;
+
+		auto edges = face->getEdgeLoop()->getOrientedEdges();
+		auto normal = face->getNormal();
+
+		for (const auto& edge : edges)
+			(*_normalArray)[edge->getOrientedStart()->getIndexInternal()] += normal;
+	}
+
+	for (auto& item : *_normalArray)
+		item.normalize();
+
+	_normalArray->dirty();
 }

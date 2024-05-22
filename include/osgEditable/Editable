@@ -214,6 +214,21 @@ namespace osgEditable {
             return _faceGeometry.get();
         }
 
+        inline osg::Vec3Array* getVertexArray() const
+        {
+            return _vertexArray.get();
+        }
+
+        inline osg::Vec3Array* getNormalArray() const
+        {
+            return _normalArray.get();
+        }
+
+        inline osg::Vec4Array* getColorArray() const
+        {
+            return _colorArray.get();
+        }
+
 
     private:
         void createVertexGeometry();
@@ -225,6 +240,8 @@ namespace osgEditable {
 
         void triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal, bool ccw);
 
+        void CalculatePerVertexNormals();
+
 
     private:
         std::vector<osg::ref_ptr<Face>> _faces;
@@ -234,6 +251,10 @@ namespace osgEditable {
         osg::ref_ptr<osg::Geometry> _vertexGeometry;
         osg::ref_ptr<osg::Geometry> _edgeGeometry;
         osg::ref_ptr<osg::Geometry> _faceGeometry;
+
+        osg::ref_ptr<osg::Vec3Array> _vertexArray;
+        osg::ref_ptr<osg::Vec3Array> _normalArray;
+        osg::ref_ptr<osg::Vec4Array> _colorArray;
 
         bool _showVertices{ true };
         bool _showEdges{ true };
@@ -253,9 +274,6 @@ namespace osgEditable {
         float _vertexSize{ 6 };
         float _edgeWidth{ 2 };
         float _faceOffset{ 1 };
-
-        osg::ref_ptr<osg::Vec3Array> _vertexArray;
-        osg::ref_ptr<osg::Vec4Array> _colorArray;
     };
 
 }
