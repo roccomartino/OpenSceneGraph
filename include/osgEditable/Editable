@@ -238,7 +238,7 @@ namespace osgEditable {
         void showVerticesChanged();
         void showEdgesChanged();
 
-        void triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal, bool ccw);
+        void triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal);
 
         void CalculatePerVertexNormals();
 

@@ -433,19 +433,33 @@ osgEditable::Editable::compileFaces()
 		auto edges = face->getEdgeLoop()->getOrientedEdges();
 		auto normal = face->getNormal();
 
+		auto isCcw = loop->isCcw(normal);
+
 		if (edges.size() == 3)
 		{
 			auto idx0 = edges[0]->getOrientedStart()->getIndexInternal();
 			auto idx1 = edges[1]->getOrientedStart()->getIndexInternal();
 			auto idx2 = edges[2]->getOrientedStart()->getIndexInternal();
 
-			(*_normalArray)[idx0] += normal;
-			(*_normalArray)[idx1] += normal;
-			(*_normalArray)[idx2] += normal;
 
 			indexArray.push_back(idx0);
 			indexArray.push_back(idx1);
 			indexArray.push_back(idx2);
+
+			if (isCcw)
+			{
+				(*_normalArray)[idx0] += normal;
+				(*_normalArray)[idx1] += normal;
+				(*_normalArray)[idx2] += normal;
+			}
+			else
+			{
+				(*_normalArray)[idx0] += normal;
+				(*_normalArray)[idx2] += normal;
+				(*_normalArray)[idx1] += normal;
+			}
+
+
 		}
 
 		else if (edges.size() == 4)
@@ -460,27 +474,52 @@ osgEditable::Editable::compileFaces()
 			(*_normalArray)[idx2] += normal;
 			(*_normalArray)[idx3] += normal;
 
-			indexArray.push_back(idx0);
-			indexArray.push_back(idx1);
-			indexArray.push_back(idx2);
+			if (isCcw)
+			{
+				indexArray.push_back(idx0);
+				indexArray.push_back(idx1);
+				indexArray.push_back(idx2);
 
-			indexArray.push_back(idx0);
-			indexArray.push_back(idx2);
-			indexArray.push_back(idx3);
+				indexArray.push_back(idx0);
+				indexArray.push_back(idx2);
+				indexArray.push_back(idx3);
+			}
+			else
+			{
+				indexArray.push_back(idx0);
+				indexArray.push_back(idx3);
+				indexArray.push_back(idx2);
+
+				indexArray.push_back(idx0);
+				indexArray.push_back(idx2);
+				indexArray.push_back(idx1);
+			}
 		}
 
 		else
 		{
 			std::vector<unsigned int> polyIndices;
 
-			for (const auto& edge : edges)
+			if (isCcw)
 			{
-				auto idx = edge->getOrientedStart()->getIndexInternal();
-				(*_normalArray)[idx] += normal;
-				polyIndices.push_back(idx);
+				for (auto itr = edges.begin(); itr != edges.end(); ++itr)
+				{
+					auto idx = (*itr)->getOrientedStart()->getIndexInternal();
+					(*_normalArray)[idx] += normal;
+					polyIndices.push_back(idx);
+				}
+			}
+			else
+			{
+				for (auto itr = edges.rbegin(); itr != edges.rend(); ++itr)
+				{
+					auto idx = (*itr)->getOrientedStart()->getIndexInternal();
+					(*_normalArray)[idx] += normal;
+					polyIndices.push_back(idx);
+				}
 			}
 
-			triangulate(_vertexArray, polyIndices, normal, loop->isCcw(normal));
+			triangulate(_vertexArray, polyIndices, normal);
 
 			geometry->addPrimitiveSet(new osg::DrawElementsUInt(GL_TRIANGLES, polyIndices.size(), &polyIndices.front()));
 		}
@@ -623,7 +662,7 @@ void osgEditable::Editable::showEdgesChanged()
 }
 
 
-void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal, bool ccw)
+void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<unsigned int>& indices, const osg::Vec3& normal)
 {
 	const float eps = 1e-5f;
 
@@ -668,9 +707,6 @@ void osgEditable::Editable::triangulate(osg::Vec3Array* vertices, std::vector<un
 
 
 	auto axis2 = normal;
-
-	if (!ccw)
-		axis2 *= -1;
 
 	auto axis0 = osg::absolute(axis2 * osg::Z_AXIS) < 1 - eps ?
 		axis2 ^ osg::Z_AXIS :
