@@ -442,8 +442,8 @@ osgEditable::Editable::compileFaces()
 			auto idx2 = edges[2]->getOrientedStart()->getIndexInternal();
 
 			(*_normalArray)[idx0] += normal;
-			(*_normalArray)[idx2] += normal;
 			(*_normalArray)[idx1] += normal;
+			(*_normalArray)[idx2] += normal;
 
 			if (isCcw)
 			{
