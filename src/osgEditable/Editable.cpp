@@ -441,25 +441,22 @@ osgEditable::Editable::compileFaces()
 			auto idx1 = edges[1]->getOrientedStart()->getIndexInternal();
 			auto idx2 = edges[2]->getOrientedStart()->getIndexInternal();
 
-
-			indexArray.push_back(idx0);
-			indexArray.push_back(idx1);
-			indexArray.push_back(idx2);
+			(*_normalArray)[idx0] += normal;
+			(*_normalArray)[idx2] += normal;
+			(*_normalArray)[idx1] += normal;
 
 			if (isCcw)
 			{
-				(*_normalArray)[idx0] += normal;
-				(*_normalArray)[idx1] += normal;
-				(*_normalArray)[idx2] += normal;
+				indexArray.push_back(idx0);
+				indexArray.push_back(idx1);
+				indexArray.push_back(idx2);
 			}
 			else
 			{
-				(*_normalArray)[idx0] += normal;
-				(*_normalArray)[idx2] += normal;
-				(*_normalArray)[idx1] += normal;
+				indexArray.push_back(idx0);
+				indexArray.push_back(idx2);
+				indexArray.push_back(idx1);
 			}
-
-
 		}
 
 		else if (edges.size() == 4)
