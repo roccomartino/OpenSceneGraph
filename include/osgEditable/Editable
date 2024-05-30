@@ -52,6 +52,13 @@ namespace osgEditable {
         void clearEdges();
         void clearFaces();
 
+        inline void clear()
+        {
+            clearFaces();
+            clearEdges();
+            clearVertices();
+        }
+
 
     public:
         void compile();
