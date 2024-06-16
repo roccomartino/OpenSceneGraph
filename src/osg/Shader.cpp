@@ -657,7 +657,7 @@ void Shader::PerContextShader::compileShader(osg::State& state)
             if (!source.empty()) sourceToCompile += source;
 
             std::string sourceWithLineNumbers = insertLineNumbers(sourceToCompile);
-            OSG_INFO << "\nCompiling " << _shader->getTypename()
+            OSG_INFO << "\nCompiling " << _shader->getTypename() << " " << _shader->getName() << "\n"
                     << " source:\n" << sourceWithLineNumbers << std::endl;
         }
 
@@ -666,7 +666,7 @@ void Shader::PerContextShader::compileShader(osg::State& state)
         if (osg::getNotifyLevel()>=osg::INFO)
         {
             std::string sourceWithLineNumbers = insertLineNumbers(source);
-            OSG_INFO << "\nCompiling A :" << _shader->getTypename()
+            OSG_INFO << "\nCompiling A :" << _shader->getTypename() << " " << _shader->getName() << "\n"
                     << " source:\n" << sourceWithLineNumbers << std::endl;
         }
     }
@@ -723,7 +723,7 @@ void Shader::PerContextShader::compileShader(osg::State& state)
             if (osg::getNotifyLevel()>=osg::INFO)
             {
                 std::string sourceWithLineNumbers = insertLineNumbers(versionLine+_defineStr+source);
-                OSG_INFO << "\nCompiling B: " << _shader->getTypename()
+                OSG_INFO << "\nCompiling B: " << _shader->getTypename() << " " << _shader->getName() << "\n"
                         << " source:\n" << sourceWithLineNumbers << std::endl;
             }
 
@@ -736,7 +736,7 @@ void Shader::PerContextShader::compileShader(osg::State& state)
             if (printOutShaders)
             {
                 std::string sourceWithLineNumbers = insertLineNumbers(_defineStr + source);
-                OSG_NOTICE << "\nCompiling " << _shader->getTypename()
+                OSG_NOTICE << "\nCompiling " << _shader->getTypename() << " " << _shader->getName() << "\n"
                            << " source:\n" << sourceWithLineNumbers << std::endl;
             }
 
@@ -749,7 +749,7 @@ void Shader::PerContextShader::compileShader(osg::State& state)
             if (osg::getNotifyLevel()>=osg::INFO)
             {
                 std::string sourceWithLineNumbers = insertLineNumbers(_defineStr+source);
-                OSG_INFO << "\nCompiling C: " << _shader->getTypename()
+                OSG_INFO << "\nCompiling C: " << _shader->getTypename() << " " << _shader->getName() << "\n"
                         << " source:\n" << sourceWithLineNumbers << std::endl;
             }
 
