@@ -26,7 +26,6 @@ FOREACH( mylibfolder
         osgTerrain
         osgWidget
         osgPresentation
-        osgWrappers/serializers
         osgPlugins
         osgEditable
     )
@@ -36,7 +35,12 @@ FOREACH( mylibfolder
 ENDFOREACH()
 
 OPTION(BUILD_OSG_DEPRECATED_SERIALIZERS "Build deprecated .osg serializers" ON)
+OPTION(BUILD_OSG_SERIALIZERS "Build .osg serializers" ON)
 
 if(BUILD_OSG_DEPRECATED_SERIALIZERS)
     ADD_SUBDIRECTORY(osgWrappers/deprecated-dotosg)
+endif()
+
+if(BUILD_OSG_SERIALIZERS)
+    ADD_SUBDIRECTORY(osgWrappers/serializers)
 endif()
